@@ -1,3 +1,4 @@
+import java.util.Scanner;
 /**
  * Entry point for the Blud chatbot.
  */
@@ -10,7 +11,7 @@ public class Blud {
      * @return section comprised of chained parts
      */
     public static String section(String[] parts) {
-        return String.join("\n", parts);
+        return "\t" + String.join("\n\t", parts);
     }
     /**
      * Starts Blud and displays its name, entry and exit greeting.
@@ -18,9 +19,9 @@ public class Blud {
      * @param args command-line arguments, which are currently unused
      */
     public static void main(String[] args) {
-        /**
-         * AI-Generated String Banner
-         */
+        // Scanner object to read user input
+        Scanner scanner = new Scanner(System.in);
+        // AI-Generated String Banner
         String banner = " ____  _            _\n"
                 + "| __ )| |_   _  ___| |\n"
                 + "|  _ \\| | | | |/ __| |\n"
@@ -31,6 +32,13 @@ public class Blud {
         String breakLine = "-------------------------------";
         System.out.println(section(new String[]{breakLine, banner}));
         System.out.println(section(new String[]{greeting, breakLine}));
+        String userInput = "";
+        String exitCommand = "bye";
+        userInput = scanner.nextLine();
+        while (!exitCommand.equals(userInput)) {
+            System.out.println(section(new String[]{userInput, breakLine}));
+            userInput = scanner.nextLine();
+        }
         System.out.println(section(new String[]{departure, breakLine}));
     }
 }
