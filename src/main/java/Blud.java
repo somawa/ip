@@ -30,9 +30,6 @@ public class Blud {
             case SIMPLE:
                 System.out.println('\t' + String.join("\n\t", parts));
                 break;
-//            case LIST:
-//                listPrint(parts, '\t');
-//                break;
             default:
                 System.out.println("Invalid mode");
         }
@@ -54,18 +51,6 @@ public class Blud {
         }
     }
 
-//    /**
-//     * Prints out list items with ids, with prefix at the front
-//     *
-//     * @param list list of items to print out
-//     *
-//     * @param prefix prefix to append to start of each item
-//     */
-//    public static void listPrint(List<String> list, char prefix) {
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(prefix + Integer.toString(i + 1) + ". " + list.get(i));
-//        }
-//    }
     /**
      * Starts Blud and displays its name, entry and exit greeting.
      *
@@ -85,11 +70,13 @@ public class Blud {
         String breakLine = "-------------------------------";
         String taskListPreface = "Here are the tasks in your list:";
         String userInput = "";
+        String todoType = "todo";
+        String deadlineType = "deadline";
+        String eventType = "event";
         String listCommand = "list";
         String markCommand = "mark";
         String unmarkCommand = "unmark";
         String exitCommand = "bye";
-//        List<String> list = new ArrayList<>();
         List<Task> taskList = new ArrayList<>();
 
         List<String> startupList = new ArrayList<>(Arrays.asList(banner.split("\n")));
@@ -99,7 +86,6 @@ public class Blud {
         userInput = scanner.nextLine();
         while (!exitCommand.equals(userInput)) {
             if (listCommand.equals(userInput)) {
-//                sectionString(null, list, breakLine, Mode.LIST);
                 sectionTask(taskListPreface, taskList, breakLine);
             } else {
                 String[] splitInput = userInput.split(" ");
@@ -116,8 +102,23 @@ public class Blud {
                     }
                     sectionString(null, Arrays.asList(response, taskList.get(id).toString()), breakLine, Mode.SIMPLE);
                 } else {
-//                    list.add(userInput);
-                    taskList.add(new Task(userInput));
+                    Task newTask;
+                    String[] parts = userInput.split(" /");
+                    String taskType = parts[0].split(" ")[0];
+                    if (todoType.equals(taskType)) {
+                        String mainDescription = parts[0].substring(5).strip();
+                        newTask = new ToDo(parts);
+                    } else if (deadlineType.equals(taskType)) {
+                        String mainDescription = parts[0].substring(9).strip();
+                        newTask = new Deadline(parts);
+                    } else if (eventType.equals(taskType)) {
+                        String mainDescription = parts[0].substring(6).strip();
+                        newTask = new Event(parts);
+                    } else {
+                        throw new RuntimeException("failed event type");
+                    }
+
+                    taskList.add(newTask);
                     sectionString(null, Arrays.asList(("added: " + userInput)), breakLine, Mode.SIMPLE);
                 }
             }
