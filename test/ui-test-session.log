@@ -1,0 +1,112 @@
+=== Compilation ===
+$ javac -d out src/main/java/*.java
+[output]
+
+[PASS]
+=== Test 1: Starts and exits cleanly ===
+Aim: Verify that Blud displays its startup banner and greeting, then displays its departure message when the user exits immediately.
+$ java -cp out Blud
+[input]
+bye
+[output]
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+
+[PASS]
+=== Test 2: Rejects an empty todo description ===
+Aim: Verify that Blud reports an error when a todo command has no description and continues accepting commands.
+$ java -cp out Blud
+[input]
+todo
+bye
+[output]
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Missing description of todo task
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+
+[PASS]
+=== Test 3: Rejects an unknown command ===
+Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
+$ java -cp out Blud
+[input]
+blah
+bye
+[output]
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	invalid task type blah, please use one of todo, event or deadline task types
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+
+[PASS]
+=== Test 4: Rejects a deadline without a deadline field ===
+Aim: Verify that Blud reports an error when a deadline task omits its `/by` field.
+$ java -cp out Blud
+[input]
+deadline submit report
+bye
+[output]
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Missing deadline (/by) for deadline task
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+
+[PASS]
+=== Test 5: Rejects an event without event dates ===
+Aim: Verify that Blud reports an error when an event task omits its `/from` and `/to` fields.
+$ java -cp out Blud
+[input]
+event team meeting
+bye
+[output]
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Missing start (/from) and end (/to) dates for deadline task
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+
+[PASS]

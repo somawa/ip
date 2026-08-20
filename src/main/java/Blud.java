@@ -84,6 +84,7 @@ public class Blud {
 
         sectionString(breakLine, startupList, null, Mode.SIMPLE);
         userInput = scanner.nextLine();
+        sectionString(null, List.of(), breakLine, Mode.SIMPLE);
         while (!exitCommand.equals(userInput)) {
             if (listCommand.equals(userInput)) {
                 sectionTask(taskListPreface, taskList, breakLine);
@@ -105,21 +106,37 @@ public class Blud {
                     Task newTask;
                     String[] parts = userInput.split(" /");
                     String taskType = parts[0].split(" ")[0];
-                    if (todoType.equals(taskType)) {
-                        String mainDescription = parts[0].substring(5).strip();
-                        newTask = new ToDo(parts);
-                    } else if (deadlineType.equals(taskType)) {
-                        String mainDescription = parts[0].substring(9).strip();
-                        newTask = new Deadline(parts);
-                    } else if (eventType.equals(taskType)) {
-                        String mainDescription = parts[0].substring(6).strip();
-                        newTask = new Event(parts);
-                    } else {
-                        throw new RuntimeException("failed event type");
+                    try {
+                        if (todoType.equals(taskType)) {
+                            newTask = new ToDo(parts);
+                        } else if (deadlineType.equals(taskType)) {
+                            newTask = new Deadline(parts);
+                        } else if (eventType.equals(taskType)) {
+                            newTask = new Event(parts);
+                        } else {
+                            throw new TaskTypeException(
+                                    String.format(
+                                            "invalid task type %s, please use one of todo, event or deadline task types",
+                                            taskType));
+                        }
+                        taskList.add(newTask);
+                        sectionString(
+                                null,
+                                Arrays.asList(
+                                        String.format(
+                                                "added: %s",
+                                                newTask),
+                                        String.format(
+                                                "Now you have %d tasks in the list",
+                                                taskList.size()
+                                        )
+                                ),
+                                breakLine,
+                                Mode.SIMPLE
+                        );
+                    } catch (RuntimeException e) {
+                        sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
                     }
-
-                    taskList.add(newTask);
-                    sectionString(null, Arrays.asList(("added: " + userInput)), breakLine, Mode.SIMPLE);
                 }
             }
             userInput = scanner.nextLine();
