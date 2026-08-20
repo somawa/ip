@@ -13,6 +13,38 @@ public class Blud {
         SIMPLE,
         LIST
     }
+    public enum Command {
+        TODO,
+        DEADLINE,
+        EVENT,
+        MARK,
+        UNMARK,
+        LIST,
+        DELETE,
+        BYE;
+
+        public static Command stringToCommand(String commandInput) {
+            if (commandInput == null) return null;
+            try {
+                // Trim whitespace and convert to uppercase to match enum style
+                return Command.valueOf(commandInput.trim().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new TaskTypeException(
+                        String.format(
+                                """
+                                        invalid task type %s, please use one of TODO,
+                                                DEADLINE,
+                                                EVENT,
+                                                MARK,
+                                                UNMARK,
+                                                LIST,
+                                                DELETE,
+                                                BYE or deadline task types""",
+                                commandInput));
+            }
+        }
+
+    }
     /**
      * Chains together a chat section using the input string array
      * Prints the chained section
@@ -74,6 +106,24 @@ public class Blud {
         return removedTask;
     }
 
+    private static void addTask(List<Task> taskList, Task newTask, String header, String footer) {
+        taskList.add(newTask);
+        sectionString(
+                header,
+                Arrays.asList(
+                        String.format(
+                                "added: %s",
+                                newTask),
+                        String.format(
+                                "Now you have %d tasks in the list",
+                                taskList.size()
+                        )
+                ),
+                footer,
+                Mode.SIMPLE
+        );
+    }
+
     /**
      * Starts Blud and displays its name, entry and exit greeting.
      *
@@ -102,6 +152,7 @@ public class Blud {
         String deleteCommand = "delete";
         String exitCommand = "bye";
         List<Task> taskList = new ArrayList<>();
+        Task newTask;
 
         List<String> startupList = new ArrayList<>(Arrays.asList(banner.split("\n")));
         startupList.add(greeting);
@@ -110,73 +161,84 @@ public class Blud {
         userInput = scanner.nextLine();
         sectionString(null, List.of(), breakLine, Mode.SIMPLE);
         while (!exitCommand.equals(userInput)) {
-            if (listCommand.equals(userInput)) {
-                sectionTask(taskListPreface, taskList, breakLine);
-            } else {
-                String[] splitInput = userInput.split(" ");
-                if ((markCommand.equals(splitInput[0]) || unmarkCommand.equals(splitInput[0]))
-                        && splitInput.length == 2) {
-                    int id = Integer.parseInt(splitInput[1]) - 1;
-                    String response = "";
-                    if (markCommand.equals(splitInput[0])) {
-                        taskList.get(id).mark();
-                        response = "Nice! I've marked this task as done:";
-                    } else {
-                        taskList.get(id).unmark();
-                        response = "OK, I've marked this task as not done yet:";
-                    }
-                    sectionString(null, Arrays.asList(response, taskList.get(id).toString()), breakLine, Mode.SIMPLE);
-                } else if (deleteCommand.equals(splitInput[0])) {
-                    try {
-                        Task deletedTask = delete(taskList, splitInput);
-                        sectionString(
-                                null,
-                                Arrays.asList(
-                                        "Task removed successfully:",
-                                        deletedTask.toString()
-                                ),
-                                breakLine,
-                                Mode.SIMPLE
-                        );
-                    } catch (DeletionException e) {
-                        sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
-                    }
-                } else {
-                    Task newTask;
-                    String[] parts = userInput.split(" /");
-                    String taskType = parts[0].split(" ")[0];
-                    try {
-                        if (todoType.equals(taskType)) {
-                            newTask = new ToDo(parts);
-                        } else if (deadlineType.equals(taskType)) {
-                            newTask = new Deadline(parts);
-                        } else if (eventType.equals(taskType)) {
-                            newTask = new Event(parts);
-                        } else {
-                            throw new TaskTypeException(
-                                    String.format(
-                                            "invalid task type %s, please use one of todo, event or deadline task types",
-                                            taskType));
+            String[] splitInput = userInput.split(" ");
+            String[] parts = userInput.split(" /");
+            String taskType = splitInput[0];
+            //if (listCommand.equals(userInput)) {
+            try {
+                Command inputCommand = Command.stringToCommand(taskType.toUpperCase());
+                switch (inputCommand) {
+                    case LIST:
+                        sectionTask(taskListPreface, taskList, breakLine);
+                        break;
+                    case MARK:
+                        //} else {
+    //                String[] splitInput = userInput.split(" ");
+                        //if ((markCommand.equals(splitInput[0]) || unmarkCommand.equals(splitInput[0]))
+                        //&& splitInput.length == 2) {
+                        int idMark = Integer.parseInt(splitInput[1]) - 1;
+                        String responseMark = "";
+                        //if (markCommand.equals(splitInput[0])) {
+                        taskList.get(idMark).mark();
+                        responseMark = "Nice! I've marked this task as done:";
+                        sectionString(null, Arrays.asList(responseMark, taskList.get(idMark).toString()), breakLine, Mode.SIMPLE);
+                        break;
+                        //} else {
+                    case UNMARK:
+                        int idUnmark = Integer.parseInt(splitInput[1]) - 1;
+                        String responseUnmark = "";
+                        taskList.get(idUnmark).unmark();
+                        responseUnmark = "OK, I've marked this task as not done yet:";
+                        sectionString(null, Arrays.asList(responseUnmark, taskList.get(idUnmark).toString()), breakLine, Mode.SIMPLE);
+                        break;
+                        //} else if (deleteCommand.equals(splitInput[0])) {
+                    case DELETE:
+                        try {
+                            Task deletedTask = delete(taskList, splitInput);
+                            sectionString(
+                                    null,
+                                    Arrays.asList(
+                                            "Task removed successfully:",
+                                            deletedTask.toString()
+                                    ),
+                                    breakLine,
+                                    Mode.SIMPLE
+                            );
+                        } catch (DeletionException e) {
+                            sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
                         }
-                        taskList.add(newTask);
-                        sectionString(
-                                null,
-                                Arrays.asList(
-                                        String.format(
-                                                "added: %s",
-                                                newTask),
-                                        String.format(
-                                                "Now you have %d tasks in the list",
-                                                taskList.size()
-                                        )
-                                ),
-                                breakLine,
-                                Mode.SIMPLE
-                        );
-                    } catch (RuntimeException e) {
-                        sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
-                    }
+                        break;
+                        //} else {
+    //                    Task newTask;
+    //                    String[] parts = userInput.split(" /");
+    //                    String taskType = parts[0].split(" ")[0];
+                    case TODO:
+    //                    try {
+    //                        if (todoType.equals(taskType)) {
+                        newTask = new ToDo(parts);
+                        addTask(taskList, newTask, null, breakLine);
+                        break;
+    //                        } else if (deadlineType.equals(taskType)) {
+                    case DEADLINE:
+                        newTask = new Deadline(parts);
+                        addTask(taskList, newTask, null, breakLine);
+                        break;
+    //                        } else if (eventType.equals(taskType)) {
+                    case EVENT:
+                        newTask = new Event(parts);
+                        addTask(taskList, newTask, null, breakLine);
+                        break;
+    //                        } else {
+                    default:
+                        throw new TaskTypeException(
+                                String.format(
+                                        "invalid task type %s, please use one of todo, event or deadline task types",
+                                        taskType));
+    //                        }
                 }
+
+            } catch (RuntimeException e) {
+                sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
             }
             userInput = scanner.nextLine();
         }
