@@ -51,6 +51,29 @@ public class Blud {
         }
     }
 
+    private static Task delete(List<Task> taskList, String[] splitInput) {
+        Task removedTask;
+        if (splitInput.length < 2) {
+            throw new DeletionException();
+        } else {
+            try {
+                int seq = Integer.parseInt(splitInput[1]);
+                removedTask = taskList.get(seq - 1);
+                taskList.remove(seq - 1);
+
+            } catch (NumberFormatException e) {
+                throw new DeletionException("Require an integer number to delete");
+            } catch (IndexOutOfBoundsException e) {
+                if (!taskList.isEmpty()) {
+                    throw new DeletionException(String.format("Require a valid integer from %s to %s to delete from", 1, taskList.size()));
+                } else {
+                    throw new DeletionException("task list is empty, nothing to delete");
+                }
+            }
+        }
+        return removedTask;
+    }
+
     /**
      * Starts Blud and displays its name, entry and exit greeting.
      *
@@ -76,6 +99,7 @@ public class Blud {
         String listCommand = "list";
         String markCommand = "mark";
         String unmarkCommand = "unmark";
+        String deleteCommand = "delete";
         String exitCommand = "bye";
         List<Task> taskList = new ArrayList<>();
 
@@ -102,6 +126,21 @@ public class Blud {
                         response = "OK, I've marked this task as not done yet:";
                     }
                     sectionString(null, Arrays.asList(response, taskList.get(id).toString()), breakLine, Mode.SIMPLE);
+                } else if (deleteCommand.equals(splitInput[0])) {
+                    try {
+                        Task deletedTask = delete(taskList, splitInput);
+                        sectionString(
+                                null,
+                                Arrays.asList(
+                                        "Task removed successfully:",
+                                        deletedTask.toString()
+                                ),
+                                breakLine,
+                                Mode.SIMPLE
+                        );
+                    } catch (DeletionException e) {
+                        sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
+                    }
                 } else {
                     Task newTask;
                     String[] parts = userInput.split(" /");
