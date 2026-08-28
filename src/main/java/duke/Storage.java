@@ -56,7 +56,7 @@ public class Storage {
     }
 
     /**
-     * crete the storage object
+     * create the storage object
      *
      * @param filePath path to the file to save task lists to
      */
@@ -65,6 +65,12 @@ public class Storage {
         this.parentDir = this.taskFile.getParent();
     }
 
+    /**
+     * check if given path exists
+     *
+     * @return boolean of whether file has been created
+     * @throws IOException
+     */
     private Boolean handlePath() throws IOException {
         // 1. Create parent directories if they don't exist
         if (this.parentDir != null && !Files.exists(this.parentDir)) {

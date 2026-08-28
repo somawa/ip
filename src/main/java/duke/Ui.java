@@ -10,6 +10,10 @@ public class Ui {
         SIMPLE,
         LIST
     }
+
+    /**
+     * enums for different commands
+     */
     public enum Command {
         TODO,
         DEADLINE,
