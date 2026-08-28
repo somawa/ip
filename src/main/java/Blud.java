@@ -6,104 +6,18 @@ import java.util.Scanner;
  * Entry point for the Blud chatbot.
  */
 public class Blud {
-    /**
-     * Mode enum to differentiate between list and simple printing
-     */
-    public enum Mode {
-        SIMPLE,
-        LIST
-    }
-    public enum Command {
-        TODO,
-        DEADLINE,
-        EVENT,
-        MARK,
-        UNMARK,
-        LIST,
-        DELETE,
-        BYE;
+    private Storage storage;
+    private TaskList taskList;
+    private Ui ui;
 
-        public static Command stringToCommand(String commandInput) {
-            if (commandInput == null) return null;
-            try {
-                // Trim whitespace and convert to uppercase to match enum style
-                return Command.valueOf(commandInput.trim().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new TaskTypeException(
-                        String.format("invalid task type %s, please use one of todo, event or deadline task types",
-                                commandInput));
-            }
-        }
-
-    }
-    /**
-     * Chains together a chat section using the input string array
-     * Prints the chained section
-     *
-     * @param header header to add as the first line of the section
-     * @param parts correspond to input string array in order of chaining
-     * @param footer footer to add at the last line of the section
-     * @param mode Mode enum for section formatting
-     */
-    public static void sectionString(String header, List<String> parts, String footer, Mode mode) {
-        if (header != null) {
-            System.out.println('\t' + header);
-        }
-        switch (mode) {
-            case SIMPLE:
-                System.out.println('\t' + String.join("\n\t", parts));
-                break;
-            default:
-                System.out.println("Invalid mode");
-        }
-        if (footer != null) {
-            System.out.println('\t' + footer);
-        }
+    public Blud(String filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        this.taskList = new TaskList(this.storage.loadTasks());
     }
 
-    public static void sectionTask(String header, List<Task> tasks, String footer) {
-        if (header != null) {
-            System.out.println('\t' + header);
-        }
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.print('\t' + Integer.toString(i + 1) + ". ");
-            System.out.println(tasks.get(i));
-        }
-        if (footer != null) {
-            System.out.println('\t' + footer);
-        }
-    }
-
-    private static Task delete(List<Task> taskList, String[] splitInput) {
-        Task removedTask;
-        if (splitInput.length < 2) {
-            throw new DeletionException();
-        } else {
-            try {
-                int seq = Integer.parseInt(splitInput[1]);
-                removedTask = taskList.get(seq - 1);
-                taskList.remove(seq - 1);
-
-            } catch (NumberFormatException e) {
-                throw new DeletionException("Require an integer number to delete");
-            } catch (IndexOutOfBoundsException e) {
-                if (!taskList.isEmpty()) {
-                    throw new DeletionException(String.format("Require a valid integer from %s to %s to delete from", 1, taskList.size()));
-                } else {
-                    throw new DeletionException("task list is empty, nothing to delete");
-                }
-            }
-        }
-        return removedTask;
-    }
-
-    private static void addTask(List<Task> taskList, Task newTask, String header, String footer) {
-        System.out.println("broke 0");
-        taskList.add(newTask);
-        System.out.println("broke 1");
-        Storage.saveTasks(taskList);
-        System.out.println("broke 2");
-        sectionString(
+    public void displayNewTask(Task newTask, String header, String footer) {
+        this.ui.sectionString(
                 header,
                 Arrays.asList(
                         String.format(
@@ -111,21 +25,21 @@ public class Blud {
                                 newTask),
                         String.format(
                                 "Now you have %d tasks in the list",
-                                taskList.size()
+                                this.taskList.getSize()
                         )
                 ),
                 footer,
-                Mode.SIMPLE
+                Ui.Mode.SIMPLE
         );
     }
 
     /**
      * Starts Blud and displays its name, entry and exit greeting.
      *
-     * @param args command-line arguments, which are currently unused
      */
-    public static void main(String[] args) {
-        List<Task> taskList = Storage.loadTasks();
+    public void run() {
+        List<Task> tasks = this.storage.loadTasks();
+        TaskList taskList = new TaskList(tasks);
         // Scanner object to read user input
         Scanner scanner = new Scanner(System.in);
         // AI-Generated String Banner
@@ -153,19 +67,19 @@ public class Blud {
         List<String> startupList = new ArrayList<>(Arrays.asList(banner.split("\n")));
         startupList.add(greeting);
 
-        sectionString(breakLine, startupList, null, Mode.SIMPLE);
+        this.ui.sectionString(breakLine, startupList, null, Ui.Mode.SIMPLE);
         userInput = scanner.nextLine();
-        sectionString(null, List.of(), breakLine, Mode.SIMPLE);
+        this.ui.sectionString(null, List.of(), breakLine, Ui.Mode.SIMPLE);
         while (!exitCommand.equals(userInput)) {
             String[] splitInput = userInput.split(" ");
             String[] parts = userInput.split(" /");
             String taskType = splitInput[0];
             //if (listCommand.equals(userInput)) {
             try {
-                Command inputCommand = Command.stringToCommand(taskType);
+                Ui.Command inputCommand = Ui.Command.stringToCommand(taskType);
                 switch (inputCommand) {
                     case LIST:
-                        sectionTask(taskListPreface, taskList, breakLine);
+                        this.ui.sectionTask(taskListPreface, taskList, breakLine);
                         break;
                     case MARK:
                         //} else {
@@ -175,36 +89,36 @@ public class Blud {
                         int idMark = Integer.parseInt(splitInput[1]) - 1;
                         String responseMark = "";
                         //if (markCommand.equals(splitInput[0])) {
-                        taskList.get(idMark).mark();
-                        Storage.saveTasks(taskList);
+                        taskList.markTask(idMark);
+                        this.storage.saveTasks(taskList);
                         responseMark = "Nice! I've marked this task as done:";
-                        sectionString(null, Arrays.asList(responseMark, taskList.get(idMark).toString()), breakLine, Mode.SIMPLE);
+                        this.ui.sectionString(null, Arrays.asList(responseMark, taskList.getTask(idMark).toString()), breakLine, Ui.Mode.SIMPLE);
                         break;
                         //} else {
                     case UNMARK:
                         int idUnmark = Integer.parseInt(splitInput[1]) - 1;
                         String responseUnmark = "";
-                        taskList.get(idUnmark).unmark();
-                        Storage.saveTasks(taskList);
+                        taskList.getTask(idUnmark).unmark();
+                        this.storage.saveTasks(taskList);
                         responseUnmark = "OK, I've marked this task as not done yet:";
-                        sectionString(null, Arrays.asList(responseUnmark, taskList.get(idUnmark).toString()), breakLine, Mode.SIMPLE);
+                        this.ui.sectionString(null, Arrays.asList(responseUnmark, taskList.getTask(idUnmark).toString()), breakLine, Ui.Mode.SIMPLE);
                         break;
                         //} else if (deleteCommand.equals(splitInput[0])) {
                     case DELETE:
                         try {
-                            Task deletedTask = delete(taskList, splitInput);
-                            Storage.saveTasks(taskList);
-                            sectionString(
+                            Task deletedTask = taskList.delete(splitInput);
+                            this.storage.saveTasks(taskList);
+                            this.ui.sectionString(
                                     null,
                                     Arrays.asList(
                                             "Task removed successfully:",
                                             deletedTask.toString()
                                     ),
                                     breakLine,
-                                    Mode.SIMPLE
+                                    Ui.Mode.SIMPLE
                             );
                         } catch (DeletionException e) {
-                            sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
+                            this.ui.sectionString(null, Arrays.asList(e.getMessage()), breakLine, Ui.Mode.SIMPLE);
                         }
                         break;
                         //} else {
@@ -216,17 +130,23 @@ public class Blud {
     //                    try {
     //                        if (todoType.equals(taskType)) {
                         newTask = new ToDo(parts);
-                        addTask(taskList, newTask, null, breakLine);
+                        taskList.addTask(newTask, null, breakLine);
+                        this.displayNewTask(newTask, null, breakLine);
+                        this.storage.saveTasks(taskList);
                         break;
     //                        } else if (deadlineType.equals(taskType)) {
                     case DEADLINE:
                         newTask = new Deadline(parts);
-                        addTask(taskList, newTask, null, breakLine);
+                        taskList.addTask(newTask, null, breakLine);
+                        this.displayNewTask(newTask, null, breakLine);
+                        this.storage.saveTasks(taskList);
                         break;
     //                        } else if (eventType.equals(taskType)) {
                     case EVENT:
                         newTask = new Event(parts);
-                        addTask(taskList, newTask, null, breakLine);
+                        taskList.addTask( newTask, null, breakLine);
+                        this.displayNewTask(newTask, null, breakLine);
+                        this.storage.saveTasks(taskList);
                         break;
     //                        } else {
                     default:
@@ -238,10 +158,14 @@ public class Blud {
                 }
 
             } catch (RuntimeException e) {
-                sectionString(null, Arrays.asList(e.getMessage()), breakLine, Mode.SIMPLE);
+                this.ui.sectionString(null, Arrays.asList(e.getMessage()), breakLine, Ui.Mode.SIMPLE);
             }
             userInput = scanner.nextLine();
         }
-        sectionString(null, Arrays.asList(departure), breakLine, Mode.SIMPLE);
+        this.ui.sectionString(null, Arrays.asList(departure), breakLine, Ui.Mode.SIMPLE);
+    }
+
+    public static void main(String[] args) {
+        new Blud("data/blud.txt").run();
     }
 }
