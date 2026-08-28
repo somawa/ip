@@ -98,8 +98,11 @@ public class Blud {
     }
 
     private static void addTask(List<Task> taskList, Task newTask, String header, String footer) {
+        System.out.println("broke 0");
         taskList.add(newTask);
+        System.out.println("broke 1");
         Storage.saveTasks(taskList);
+        System.out.println("broke 2");
         sectionString(
                 header,
                 Arrays.asList(
@@ -122,7 +125,7 @@ public class Blud {
      * @param args command-line arguments, which are currently unused
      */
     public static void main(String[] args) {
-
+        List<Task> taskList = Storage.loadTasks();
         // Scanner object to read user input
         Scanner scanner = new Scanner(System.in);
         // AI-Generated String Banner
@@ -144,7 +147,7 @@ public class Blud {
         String unmarkCommand = "unmark";
         String deleteCommand = "delete";
         String exitCommand = "bye";
-        List<Task> taskList = new ArrayList<>();
+//        List<Task> taskList = new ArrayList<>();
         Task newTask;
 
         List<String> startupList = new ArrayList<>(Arrays.asList(banner.split("\n")));
@@ -209,6 +212,7 @@ public class Blud {
     //                    String[] parts = userInput.split(" /");
     //                    String taskType = parts[0].split(" ")[0];
                     case TODO:
+                        System.out.println("HERERERERE");
     //                    try {
     //                        if (todoType.equals(taskType)) {
                         newTask = new ToDo(parts);
