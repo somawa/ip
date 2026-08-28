@@ -30,16 +30,7 @@ public class Blud {
                 return Command.valueOf(commandInput.trim().toUpperCase());
             } catch (IllegalArgumentException e) {
                 throw new TaskTypeException(
-                        String.format(
-                                """
-                                        invalid task type %s, please use one of TODO,
-                                                DEADLINE,
-                                                EVENT,
-                                                MARK,
-                                                UNMARK,
-                                                LIST,
-                                                DELETE,
-                                                BYE or deadline task types""",
+                        String.format("invalid task type %s, please use one of todo, event or deadline task types",
                                 commandInput));
             }
         }
@@ -108,6 +99,7 @@ public class Blud {
 
     private static void addTask(List<Task> taskList, Task newTask, String header, String footer) {
         taskList.add(newTask);
+        Storage.saveTasks(taskList);
         sectionString(
                 header,
                 Arrays.asList(
@@ -130,6 +122,7 @@ public class Blud {
      * @param args command-line arguments, which are currently unused
      */
     public static void main(String[] args) {
+
         // Scanner object to read user input
         Scanner scanner = new Scanner(System.in);
         // AI-Generated String Banner
@@ -166,7 +159,7 @@ public class Blud {
             String taskType = splitInput[0];
             //if (listCommand.equals(userInput)) {
             try {
-                Command inputCommand = Command.stringToCommand(taskType.toUpperCase());
+                Command inputCommand = Command.stringToCommand(taskType);
                 switch (inputCommand) {
                     case LIST:
                         sectionTask(taskListPreface, taskList, breakLine);
@@ -180,6 +173,7 @@ public class Blud {
                         String responseMark = "";
                         //if (markCommand.equals(splitInput[0])) {
                         taskList.get(idMark).mark();
+                        Storage.saveTasks(taskList);
                         responseMark = "Nice! I've marked this task as done:";
                         sectionString(null, Arrays.asList(responseMark, taskList.get(idMark).toString()), breakLine, Mode.SIMPLE);
                         break;
@@ -188,6 +182,7 @@ public class Blud {
                         int idUnmark = Integer.parseInt(splitInput[1]) - 1;
                         String responseUnmark = "";
                         taskList.get(idUnmark).unmark();
+                        Storage.saveTasks(taskList);
                         responseUnmark = "OK, I've marked this task as not done yet:";
                         sectionString(null, Arrays.asList(responseUnmark, taskList.get(idUnmark).toString()), breakLine, Mode.SIMPLE);
                         break;
@@ -195,6 +190,7 @@ public class Blud {
                     case DELETE:
                         try {
                             Task deletedTask = delete(taskList, splitInput);
+                            Storage.saveTasks(taskList);
                             sectionString(
                                     null,
                                     Arrays.asList(

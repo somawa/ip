@@ -23,6 +23,21 @@ public abstract class Task {
         this.done = false;
     }
 
+    /**
+     * Returns this task's stable on-disk representation.
+     *
+     * @return a line that can be written to the task file
+     */
+    public abstract String toStorageString();
+
+    protected boolean isDone() {
+        return done;
+    }
+
+    protected String getTaskDescription() {
+        return taskDescription;
+    }
+
     @Override
     public String toString() {
         return "[" + doneRep() + "] " + this.taskDescription;
