@@ -20,6 +20,11 @@ public class Ui {
         DELETE,
         BYE;
 
+        /**
+         * Converts input command to enum command
+         *
+         * @param commandInput the string command user input
+         */
         public static Command stringToCommand(String commandInput) {
             if (commandInput == null) return null;
             try {

@@ -55,6 +55,11 @@ public class Storage {
         return newTask;
     }
 
+    /**
+     * crete the storage object
+     *
+     * @param filePath path to the file to save task lists to
+     */
     public Storage(String filePath) {
         this.taskFile = Path.of(filePath);
         this.parentDir = this.taskFile.getParent();
