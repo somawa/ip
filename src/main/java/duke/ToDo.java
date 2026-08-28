@@ -1,3 +1,5 @@
+package duke;
+
 public class ToDo extends Task {
     public ToDo (String[] parts) {
         if (parts[0].length() < 6) {

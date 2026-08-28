@@ -1,3 +1,5 @@
+package duke;
+
 public class EventException extends RuntimeException{
     public EventException() {
         super("Missing description of event task");

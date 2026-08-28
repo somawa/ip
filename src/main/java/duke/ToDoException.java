@@ -1,3 +1,5 @@
+package duke;
+
 public class ToDoException extends RuntimeException{
     public ToDoException() {
         super("Missing description of todo task");

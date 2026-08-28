@@ -1,3 +1,5 @@
+package duke;
+
 public class DeletionException extends RuntimeException{
     public DeletionException() {
         super("Require an integer number to delete");
