@@ -128,7 +128,6 @@ public class Blud {
     //                    String[] parts = userInput.split(" /");
     //                    String taskType = parts[0].split(" ")[0];
                     case TODO:
-                        System.out.println("HERERERERE");
     //                    try {
     //                        if (todoType.equals(taskType)) {
                         newTask = new ToDo(parts);
