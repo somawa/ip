@@ -2,7 +2,7 @@
 
 Working directory: repository root  
 Runtime: Java 25  
-Prerequisite: the runner freshly compiles the application with `javac -d out src/main/java/*.java` before running the cases and stops if compilation fails.  
+Prerequisite: the runner resolves the Gradle main compile classpath, freshly compiles the application with `javac`, and stops if compilation fails.  
 Runner: `.codex/skills/test-ui/scripts/run_ui_tests.py`  
 
 The runner executes cases from top to bottom. `Inputs` are sent to standard input exactly as written. Output comparison normalizes line endings and ignores only the final newline; tabs, spaces, and all other characters are significant.
@@ -11,7 +11,7 @@ The runner executes cases from top to bottom. `Inputs` are sent to standard inpu
 
 Aim: Verify that Blud displays its startup banner and greeting, then displays its departure message when the user exits immediately.
 
-Command: `java -cp out Blud`
+Command: `java -cp out duke.Blud`
 
 Inputs:
 ```text
@@ -37,7 +37,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a todo command has no description and continues accepting commands.
 
-Command: `java -cp out Blud`
+Command: `java -cp out duke.Blud`
 
 Inputs:
 ```text
@@ -66,7 +66,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
 
-Command: `java -cp out Blud`
+Command: `java -cp out duke.Blud`
 
 Inputs:
 ```text
@@ -95,7 +95,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a deadline task omits its `/by` field.
 
-Command: `java -cp out Blud`
+Command: `java -cp out duke.Blud`
 
 Inputs:
 ```text
@@ -124,7 +124,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when an event task omits its `/from` and `/to` fields.
 
-Command: `java -cp out Blud`
+Command: `java -cp out duke.Blud`
 
 Inputs:
 ```text
