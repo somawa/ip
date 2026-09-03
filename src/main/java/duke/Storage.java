@@ -82,7 +82,7 @@ public class Storage {
             System.out.println("Created missing file: " + this.taskFile.getFileName());
             return false;
         } else {
-            System.out.println("File already exists. No action taken.");
+//            System.out.println("File already exists. No action taken.");
             return true;
         }
     }

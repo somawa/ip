@@ -1,8 +1,10 @@
 package duke;
 
+import java.time.LocalDateTime;
+
 public class Event extends Task {
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     public Event (String[] parts) {
         if (parts[0].length() < 7) {
             throw new EventException();
@@ -19,18 +21,33 @@ public class Event extends Task {
         }
         String mainDescription = parts[0].substring(6).strip();
         super(mainDescription);
-        this.startDate = parts[1].substring(5).strip();
-        this.endDate = parts[2].substring(3).strip();
+        this.startDate = DateUtils.parseInput(
+                parts[1].substring(5).strip()
+        );
+        this.endDate = DateUtils.parseInput(
+                parts[2].substring(3).strip()
+        );
     }
 
     @Override
     public String toString() {
-        return String.format("[E]%s (from: %s to: %s)", super.toString(), startDate, endDate);
+
+        return String.format(
+                "[E]%s (from: %s to: %s)",
+                super.toString(),
+                DateUtils.formatOutput(startDate),
+                DateUtils.formatOutput(endDate)
+        );
     }
 
     @Override
     public String toStorageString() {
-        return String.format("E | %d | %s | %s | %s", isDone() ? 1 : 0,
-                getTaskDescription(), startDate, endDate);
+        return String.format(
+                "E | %d | %s | %s | %s",
+                isDone() ? 1 : 0,
+                getTaskDescription(),
+                DateUtils.formatForStorage(startDate),
+                DateUtils.formatForStorage(endDate)
+        );
     }
 }
