@@ -120,6 +120,8 @@ public class Blud extends Application {
             switch (inputCommand) {
                 case LIST:
                     return formatTaskList();
+                case FIND:
+                    return new Find(userInput).execute(taskList);
                 case MARK:
                     int idMark = Integer.parseInt(splitInput[1]) - 1;
                     taskList.markTask(idMark);

@@ -18,6 +18,7 @@ public class Ui {
         MARK,
         UNMARK,
         LIST,
+        FIND,
         DELETE,
         BYE;
 

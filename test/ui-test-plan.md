@@ -62,6 +62,45 @@ Expected output:
 	-------------------------------
 ```
 
+### Finds tasks by a description keyword
+
+Aim: Verify that Blud finds tasks whose descriptions partially match a keyword, regardless of letter case.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+todo read book
+deadline return book /by 6/6/2026 1800
+find BOOK
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	added: [T][ ] read book
+	Now you have 1 tasks in the list
+	-------------------------------
+	added: [D][ ] return book (by: Jun 06 2026, 6:00 pm)
+	Now you have 2 tasks in the list
+	-------------------------------
+	Here are the matching tasks in your list:
+	1. [T][ ] read book
+	2. [D][ ] return book (by: Jun 06 2026, 6:00 pm)
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
 ### Rejects an unknown command
 
 Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
