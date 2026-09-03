@@ -30,10 +30,10 @@ public class TaskList {
     }
 
     public void addTask(Task newTask, String header, String footer) {
-        System.out.println("broke 0");
+//        System.out.println("broke 0");
         this.taskList.add(newTask);
-        System.out.println("broke 1");
-        System.out.println("broke 2");
+//        System.out.println("broke 1");
+//        System.out.println("broke 2");
     }
 
     public TaskList() {

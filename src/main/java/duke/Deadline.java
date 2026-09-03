@@ -13,7 +13,9 @@ public class Deadline extends Task {
         }
         String mainDescription = parts[0].substring(9).strip();
         super(mainDescription);
-        this.deadline = DateUtils.parseInput(parts[1].substring(3).strip());
+        this.deadline = DateUtils.parseInput(
+                parts[1].substring(3).strip()
+        );
     }
 
     @Override

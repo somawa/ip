@@ -63,13 +63,14 @@ def comparable(value: str) -> str:
 
 def compile_application(root: Path, transcript: list[str]) -> tuple[bool, str]:
     transcript.append("=== Compilation ===")
-    transcript.append("$ javac -d out src/main/java/*.java")
+    transcript.append("$ javac -d out src/main/java/**/*.java")
     output_directory = root / "out"
     if output_directory.exists():
         shutil.rmtree(output_directory)
+    source_root = root / "src" / "main" / "java"
     try:
         completed = subprocess.run(
-            ["javac", "-d", "out", *sorted(str(path) for path in (root / "src" / "main" / "java").glob("*.java"))],
+            ["javac", "-d", "out", *sorted(str(path) for path in source_root.rglob("*.java"))],
             cwd=root,
             text=True,
             capture_output=True,

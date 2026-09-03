@@ -1,112 +1,167 @@
 === Compilation ===
-$ javac -d out src/main/java/*.java
+$ javac -d out src/main/java/**/*.java
 [output]
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:3: error: package javafx.application does not exist
+import javafx.application.Application;
+                         ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:4: error: package javafx.geometry does not exist
+import javafx.geometry.Insets;
+                      ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:5: error: package javafx.scene does not exist
+import javafx.scene.Scene;
+                   ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:6: error: package javafx.scene.control does not exist
+import javafx.scene.control.Button;
+                           ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:7: error: package javafx.scene.control does not exist
+import javafx.scene.control.Label;
+                           ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:8: error: package javafx.scene.control does not exist
+import javafx.scene.control.TextArea;
+                           ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:9: error: package javafx.scene.control does not exist
+import javafx.scene.control.TextField;
+                           ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:10: error: package javafx.scene.layout does not exist
+import javafx.scene.layout.BorderPane;
+                          ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:11: error: package javafx.scene.layout does not exist
+import javafx.scene.layout.HBox;
+                          ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:12: error: package javafx.scene.layout does not exist
+import javafx.scene.layout.Priority;
+                          ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:13: error: package javafx.scene.layout does not exist
+import javafx.scene.layout.VBox;
+                          ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:15: error: package javafx.stage does not exist
+import javafx.stage.Stage;
+                   ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:27: error: cannot find symbol
+public class Blud extends Application {
+                          ^
+  symbol: class Application
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:55: error: cannot find symbol
+    public void start(Stage stage) {
+                      ^
+  symbol:   class Stage
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Launcher.java:3: error: package javafx.application does not exist
+import javafx.application.Application;
+                         ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:54: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:56: error: cannot find symbol
+        Label title = new Label("Blud");
+        ^
+  symbol:   class Label
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:56: error: cannot find symbol
+        Label title = new Label("Blud");
+                          ^
+  symbol:   class Label
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:59: error: cannot find symbol
+        TextArea conversation = new TextArea();
+        ^
+  symbol:   class TextArea
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:59: error: cannot find symbol
+        TextArea conversation = new TextArea();
+                                    ^
+  symbol:   class TextArea
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:66: error: cannot find symbol
+        TextField commandInput = new TextField();
+        ^
+  symbol:   class TextField
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:66: error: cannot find symbol
+        TextField commandInput = new TextField();
+                                     ^
+  symbol:   class TextField
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:68: error: cannot find symbol
+        Button sendButton = new Button("Send");
+        ^
+  symbol:   class Button
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:68: error: cannot find symbol
+        Button sendButton = new Button("Send");
+                                ^
+  symbol:   class Button
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:87: error: cannot find symbol
+        HBox inputRow = new HBox(10, commandInput, sendButton);
+        ^
+  symbol:   class HBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:87: error: cannot find symbol
+        HBox inputRow = new HBox(10, commandInput, sendButton);
+                            ^
+  symbol:   class HBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:88: error: cannot find symbol
+        HBox.setHgrow(commandInput, Priority.ALWAYS);
+                                    ^
+  symbol:   variable Priority
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:88: error: cannot find symbol
+        HBox.setHgrow(commandInput, Priority.ALWAYS);
+        ^
+  symbol:   variable HBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:89: error: cannot find symbol
+        VBox content = new VBox(10, title, conversation, inputRow);
+        ^
+  symbol:   class VBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:89: error: cannot find symbol
+        VBox content = new VBox(10, title, conversation, inputRow);
+                           ^
+  symbol:   class VBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:90: error: cannot find symbol
+        content.setPadding(new Insets(15));
+                               ^
+  symbol:   class Insets
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:91: error: cannot find symbol
+        VBox.setVgrow(conversation, Priority.ALWAYS);
+                                    ^
+  symbol:   variable Priority
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:91: error: cannot find symbol
+        VBox.setVgrow(conversation, Priority.ALWAYS);
+        ^
+  symbol:   variable VBox
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:93: error: cannot find symbol
+        BorderPane root = new BorderPane(content);
+        ^
+  symbol:   class BorderPane
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:93: error: cannot find symbol
+        BorderPane root = new BorderPane(content);
+                              ^
+  symbol:   class BorderPane
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:94: error: cannot find symbol
+        Scene scene = new Scene(root, 620, 480);
+        ^
+  symbol:   class Scene
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Blud.java:94: error: cannot find symbol
+        Scene scene = new Scene(root, 620, 480);
+                          ^
+  symbol:   class Scene
+  location: class Blud
+C:\Users\aagya\Documents\NUS\Y2S1\CS2103T\projects\ip\src\main\java\duke\Launcher.java:8: error: cannot find symbol
+        Application.launch(Blud.class, args);
+        ^
+  symbol:   variable Application
+  location: class Launcher
+38 errors
 
-[PASS]
-=== Test 1: Starts and exits cleanly ===
-Aim: Verify that Blud displays its startup banner and greeting, then displays its departure message when the user exits immediately.
-$ java -cp out Blud
-[input]
-bye
-[output]
-	-------------------------------
-	 ____  _            _
-	| __ )| |_   _  ___| |
-	|  _ \| | | | |/ __| |
-	| |_) | | |_| | (__|_|
-	|____/|_|\__,_|\___(_)
-	Hey! This is Blud, what can I do for you today?
-	
-	-------------------------------
-	Thanks for the conversation, see you soon!
-	-------------------------------
-
-[PASS]
-=== Test 2: Rejects an empty todo description ===
-Aim: Verify that Blud reports an error when a todo command has no description and continues accepting commands.
-$ java -cp out Blud
-[input]
-todo
-bye
-[output]
-	-------------------------------
-	 ____  _            _
-	| __ )| |_   _  ___| |
-	|  _ \| | | | |/ __| |
-	| |_) | | |_| | (__|_|
-	|____/|_|\__,_|\___(_)
-	Hey! This is Blud, what can I do for you today?
-	
-	-------------------------------
-	Missing description of todo task
-	-------------------------------
-	Thanks for the conversation, see you soon!
-	-------------------------------
-
-[PASS]
-=== Test 3: Rejects an unknown command ===
-Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
-$ java -cp out Blud
-[input]
-blah
-bye
-[output]
-	-------------------------------
-	 ____  _            _
-	| __ )| |_   _  ___| |
-	|  _ \| | | | |/ __| |
-	| |_) | | |_| | (__|_|
-	|____/|_|\__,_|\___(_)
-	Hey! This is Blud, what can I do for you today?
-	
-	-------------------------------
-	invalid task type blah, please use one of todo, event or deadline task types
-	-------------------------------
-	Thanks for the conversation, see you soon!
-	-------------------------------
-
-[PASS]
-=== Test 4: Rejects a deadline without a deadline field ===
-Aim: Verify that Blud reports an error when a deadline task omits its `/by` field.
-$ java -cp out Blud
-[input]
-deadline submit report
-bye
-[output]
-	-------------------------------
-	 ____  _            _
-	| __ )| |_   _  ___| |
-	|  _ \| | | | |/ __| |
-	| |_) | | |_| | (__|_|
-	|____/|_|\__,_|\___(_)
-	Hey! This is Blud, what can I do for you today?
-	
-	-------------------------------
-	Missing deadline (/by) for deadline task
-	-------------------------------
-	Thanks for the conversation, see you soon!
-	-------------------------------
-
-[PASS]
-=== Test 5: Rejects an event without event dates ===
-Aim: Verify that Blud reports an error when an event task omits its `/from` and `/to` fields.
-$ java -cp out Blud
-[input]
-event team meeting
-bye
-[output]
-	-------------------------------
-	 ____  _            _
-	| __ )| |_   _  ___| |
-	|  _ \| | | | |/ __| |
-	| |_) | | |_| | (__|_|
-	|____/|_|\__,_|\___(_)
-	Hey! This is Blud, what can I do for you today?
-	
-	-------------------------------
-	Missing start (/from) and end (/to) dates for deadline task
-	-------------------------------
-	Thanks for the conversation, see you soon!
-	-------------------------------
-
-[PASS]
+[FAIL: compilation exit code 1]
