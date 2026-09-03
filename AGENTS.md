@@ -42,5 +42,6 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
-When proposing or creating a commit message, include enough detail to explain the rationale for the change.
+For every proposed or requested commit, apply the project-specific `$seedu-git-standard` skill. Use a meaningful kebab-case branch name, and for issue-related branches use `<issue-number>-<keywords-from-issue-title>`.
+Commit subjects must be imperative, capitalized, concise (aim for 50 characters and never exceed 72 characters), and must not end with a period. Non-trivial commits must have a blank-line-separated body wrapped at 72 characters that explains what changed and why, not how. Keep commits focused and split overly broad changes when practical.
 Do not commit or push unless explicitly asked.
