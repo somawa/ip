@@ -2,18 +2,15 @@ package duke;
 
 import java.util.List;
 
+/** Formats user-interface sections for the console application. */
 public class Ui {
-    /**
-     * Mode enum to differentiate between list and simple printing
-     */
+    /** Selects the layout used to print a section. */
     public enum Mode {
         SIMPLE,
         LIST
     }
 
-    /**
-     * enums for different commands
-     */
+    /** Represents the commands accepted by Blud. */
     public enum Command {
         TODO,
         DEADLINE,
@@ -24,13 +21,11 @@ public class Ui {
         DELETE,
         BYE;
 
-        /**
-         * Converts input command to enum command
-         *
-         * @param commandInput the string command user input
-         */
+        /** Converts a user-entered command name to its command enum value. */
         public static Command stringToCommand(String commandInput) {
-            if (commandInput == null) return null;
+            if (commandInput == null) {
+                return null;
+            }
             try {
                 // Trim whitespace and convert to uppercase to match enum style
                 return Command.valueOf(commandInput.trim().toUpperCase());
@@ -42,15 +37,7 @@ public class Ui {
         }
 
     }
-    /**
-     * Chains together a chat section using the input string array
-     * Prints the chained section
-     *
-     * @param header header to add as the first line of the section
-     * @param parts correspond to input string array in order of chaining
-     * @param footer footer to add at the last line of the section
-     * @param mode Mode enum for section formatting
-     */
+    /** Prints a formatted section made from a header, body parts, and footer. */
     public void sectionString(String header, List<String> parts, String footer, Mode mode) {
         if (header != null) {
             System.out.println('\t' + header);
@@ -67,6 +54,7 @@ public class Ui {
         }
     }
 
+    /** Prints a formatted section containing the tasks in the supplied list. */
     public void sectionTask(String header, TaskList taskList, String footer) {
         if (header != null) {
             System.out.println('\t' + header);

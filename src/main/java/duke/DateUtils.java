@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Provides the date formats used by command parsing, display, and storage. */
 public class DateUtils {
     // Matches input like "2/12/2019 1800" or "02/12/2019 1800"
     // 'd' and 'M' single letters allow for single-digit days/months
@@ -12,6 +13,7 @@ public class DateUtils {
     // Outputs exactly: "Dec 02 2019, 6:00 PM"
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
+    /** Parses a user-entered date and time. */
     public static LocalDateTime parseInput(String input) {
         try {
             return LocalDateTime.parse(input.trim(), INPUT_FORMATTER);
@@ -20,10 +22,12 @@ public class DateUtils {
         }
     }
 
+    /** Formats a date and time for persistent storage. */
     public static String formatForStorage(LocalDateTime dateTime) {
         return dateTime.format(INPUT_FORMATTER);
     }
 
+    /** Formats a date and time for display to the user. */
     public static String formatOutput(LocalDateTime dateTime) {
         return dateTime.format(OUTPUT_FORMATTER);
     }

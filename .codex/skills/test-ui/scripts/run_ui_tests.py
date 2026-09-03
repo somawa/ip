@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import os
 import shutil
 import subprocess
 import sys
@@ -61,16 +62,49 @@ def comparable(value: str) -> str:
     return value.replace("\r\n", "\n").replace("\r", "\n").removesuffix("\n")
 
 
-def compile_application(root: Path, transcript: list[str]) -> tuple[bool, str]:
+def resolve_main_classpath(root: Path, transcript: list[str]) -> tuple[bool, str]:
+    gradle_wrapper = root / ("gradlew.bat" if sys.platform == "win32" else "gradlew")
+    environment = os.environ.copy()
+    environment["GRADLE_USER_HOME"] = str(root / ".gradle-user")
+    transcript.append(f"$ {gradle_wrapper.name} -q printMainClasspath")
+    try:
+        completed = subprocess.run(
+            [str(gradle_wrapper), "-q", "printMainClasspath"],
+            cwd=root,
+            text=True,
+            capture_output=True,
+            timeout=60,
+            env=environment,
+        )
+    except subprocess.TimeoutExpired as error:
+        output = (error.stdout or "") + (error.stderr or "")
+        transcript += ["[classpath output]", output, "[FAIL: classpath resolution timed out]"]
+        return False, "<classpath resolution timed out>"
+
+    output = completed.stdout + completed.stderr
+    transcript += ["[classpath output]", output]
+    if completed.returncode != 0:
+        transcript.append(f"[FAIL: classpath resolution exit code {completed.returncode}]")
+        return False, output
+    classpath = next((line.strip() for line in reversed(completed.stdout.splitlines()) if line.strip()), "")
+    if not classpath:
+        transcript.append("[FAIL: Gradle returned an empty classpath]")
+        return False, "<empty classpath>"
+    transcript.append("[PASS]")
+    return True, classpath
+
+
+def compile_application(root: Path, transcript: list[str], classpath: str) -> tuple[bool, str]:
     transcript.append("=== Compilation ===")
-    transcript.append("$ javac -d out src/main/java/**/*.java")
+    transcript.append("$ javac -cp <Gradle main classpath> -d out src/main/java/**/*.java")
     output_directory = root / "out"
     if output_directory.exists():
         shutil.rmtree(output_directory)
     source_root = root / "src" / "main" / "java"
     try:
         completed = subprocess.run(
-            ["javac", "-d", "out", *sorted(str(path) for path in source_root.rglob("*.java"))],
+            ["javac", "-cp", classpath, "-d", "out",
+             *sorted(str(path) for path in source_root.rglob("*.java"))],
             cwd=root,
             text=True,
             capture_output=True,
@@ -94,7 +128,18 @@ def run(plan_path: Path) -> int:
     cases = parse_plan(plan_path)
     root = plan_path.resolve().parent.parent
     transcript: list[str] = []
-    compiled, compilation_output = compile_application(root, transcript)
+    classpath_resolved, classpath = resolve_main_classpath(root, transcript)
+    if not classpath_resolved:
+        return finish(
+            plan_path,
+            transcript,
+            None,
+            None,
+            None,
+            failure_title="CLASSPATH RESOLUTION FAILED",
+            failure_actual=classpath,
+        )
+    compiled, compilation_output = compile_application(root, transcript, classpath)
     if not compiled:
         return finish(
             plan_path,
@@ -106,16 +151,20 @@ def run(plan_path: Path) -> int:
             failure_actual=compilation_output,
         )
     for number, case in enumerate(cases, 1):
+        command = case.command.replace(
+            "java -cp out",
+            f"java -cp out{os.pathsep}{classpath}",
+        )
         transcript += [
             f"=== Test {number}: {case.name} ===",
             f"Aim: {case.aim}",
-            f"$ {case.command}",
+            f"$ {command}",
             f"[input]",
             case.inputs,
         ]
         try:
             completed = subprocess.run(
-                case.command,
+                command,
                 cwd=root,
                 input=case.inputs,
                 text=True,

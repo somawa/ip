@@ -2,13 +2,14 @@ package duke;
 
 import java.time.LocalDateTime;
 
+/** Represents a task that occurs between a start date and an end date. */
 public class Event extends Task {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    public Event (String[] parts) {
-        if (parts[0].length() < 7) {
-            throw new EventException();
-        } else if (parts.length < 2) {
+    /** Creates an event task from its parsed command parts. */
+    public Event(String[] parts) {
+        super(validateAndExtractDescription(parts));
+        if (parts.length < 2) {
             throw new DeadlineException("Missing start (/from) and end (/to) dates for deadline task");
         } else if (parts.length < 3) {
             if (!parts[1].startsWith("from") && parts[1].startsWith("to")) {
@@ -19,8 +20,6 @@ public class Event extends Task {
                 throw new DeadlineException("Missing start (/from) and end (/to) dates for deadline task");
             }
         }
-        String mainDescription = parts[0].substring(6).strip();
-        super(mainDescription);
         this.startDate = DateUtils.parseInput(
                 parts[1].substring(5).strip()
         );
@@ -29,6 +28,7 @@ public class Event extends Task {
         );
     }
 
+    /** Returns the event task in display format. */
     @Override
     public String toString() {
 
@@ -40,6 +40,7 @@ public class Event extends Task {
         );
     }
 
+    /** Returns the event task in storage format. */
     @Override
     public String toStorageString() {
         return String.format(
@@ -49,5 +50,13 @@ public class Event extends Task {
                 DateUtils.formatForStorage(startDate),
                 DateUtils.formatForStorage(endDate)
         );
+    }
+
+    /** Validates the command parts and returns the event description. */
+    private static String validateAndExtractDescription(String[] parts) {
+        if (parts == null || parts.length == 0 || parts[0].length() < 7) {
+            throw new EventException();
+        }
+        return parts[0].substring(6).strip();
     }
 }

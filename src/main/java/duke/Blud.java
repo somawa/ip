@@ -1,5 +1,10 @@
 package duke;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,12 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 /**
  * The Blud chatbot and its JavaFX user interface.
@@ -33,14 +33,14 @@ public class Blud extends Application {
     private Storage storage;
     private TaskList taskList;
 
-    /** Constructor used by JavaFX. */
+    /** Creates a Blud instance using the default storage file. */
     public Blud() {
         this(DEFAULT_FILE_PATH);
     }
 
     /**
      * Creates a Blud instance using the specified task storage file.
-     * @param filePath path to the task storage file
+     * @param filePath path to the task storage file.
      */
     public Blud(String filePath) {
         this.storage = new Storage(filePath);
@@ -49,7 +49,7 @@ public class Blud extends Application {
 
     /**
      * Starts the JavaFX window and wires the controls to the chatbot.
-     * @param stage the primary JavaFX window
+     * @param stage the primary JavaFX window.
      */
     @Override
     public void start(Stage stage) {
@@ -102,8 +102,8 @@ public class Blud extends Application {
 
     /**
      * Processes one chatbot command and returns the response for display.
-     * @param userInput command entered by the user
-     * @return a human-readable response without UI-specific formatting
+     * @param userInput command entered by the user.
+     * @return a human-readable response without UI-specific formatting.
      */
     public String processCommand(String userInput) {
         if (userInput == null || userInput.isBlank()) {

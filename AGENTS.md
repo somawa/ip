@@ -24,6 +24,10 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 # Project-specific requirements
 
+## SE-EDU Java coding standard
+
+All Java code in this repository MUST follow every rule in `.codex/skills/seedu-java-coding-standard/SKILL.md`, based on the complete SE-EDU basic + intermediate Java coding standard. This includes naming, package/import ordering, explicit imports, indentation, line length and wrapping, K&R braces, whitespace, blank-line separation, variable scope and initialization, encapsulation, braces around all loops and conditionals, intentional switch fall-through comments, and English/American-spelling comments. Header Javadocs are required for every class and every non-private method, plus every non-trivial private method; project-specific requirements take precedence over the source guide's exemptions.
+
 ## Code-update verification
 
 After every code update:

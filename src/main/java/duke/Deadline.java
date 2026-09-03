@@ -2,22 +2,21 @@ package duke;
 
 import java.time.LocalDateTime;
 
+/** Represents a task that must be completed by a specified date and time. */
 public class Deadline extends Task {
-//    private String deadline;
     private LocalDateTime deadline;
-    public Deadline (String[] parts) {
-        if (parts[0].length() < 10) {
-            throw new DeadlineException();
-        } else if (parts.length < 2 || !parts[1].startsWith("by")) {
+    /** Creates a deadline task from its parsed command parts. */
+    public Deadline(String[] parts) {
+        super(validateAndExtractDescription(parts));
+        if (parts.length < 2 || !parts[1].startsWith("by")) {
             throw new DeadlineException("Missing deadline (/by) for deadline task");
         }
-        String mainDescription = parts[0].substring(9).strip();
-        super(mainDescription);
         this.deadline = DateUtils.parseInput(
                 parts[1].substring(3).strip()
         );
     }
 
+    /** Returns the deadline task in display format. */
     @Override
     public String toString() {
         return String.format(
@@ -27,6 +26,7 @@ public class Deadline extends Task {
         );
     }
 
+    /** Returns the deadline task in storage format. */
     @Override
     public String toStorageString() {
         return String.format(
@@ -35,5 +35,13 @@ public class Deadline extends Task {
                 getTaskDescription(),
                 DateUtils.formatForStorage(deadline)
         );
+    }
+
+    /** Validates the command parts and returns the deadline description. */
+    private static String validateAndExtractDescription(String[] parts) {
+        if (parts == null || parts.length == 0 || parts[0].length() < 10) {
+            throw new DeadlineException();
+        }
+        return parts[0].substring(9).strip();
     }
 }
