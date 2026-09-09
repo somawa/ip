@@ -24,11 +24,13 @@ public class DateUtils {
 
     /** Formats a date and time for persistent storage. */
     public static String formatForStorage(LocalDateTime dateTime) {
+        assert dateTime != null : "A stored date must have been parsed successfully";
         return dateTime.format(INPUT_FORMATTER);
     }
 
     /** Formats a date and time for display to the user. */
     public static String formatOutput(LocalDateTime dateTime) {
+        assert dateTime != null : "A displayed date must have been parsed successfully";
         return dateTime.format(OUTPUT_FORMATTER);
     }
 }
