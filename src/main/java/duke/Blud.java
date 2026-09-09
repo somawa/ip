@@ -153,6 +153,7 @@ public class Blud extends Application {
 
     /** Adds a task, persists the updated list, and creates its response. */
     private String addTask(Task newTask) {
+        assert newTask != null : "Command parsing must produce a valid task";
         taskList.addTask(newTask);
         storage.saveTasks(taskList);
         return "added: " + newTask + "\nNow you have " + taskList.getSize() + " tasks in the list";
@@ -162,7 +163,9 @@ public class Blud extends Application {
     private String formatTaskList() {
         StringBuilder response = new StringBuilder(TASK_LIST_PREFACE);
         for (int i = 0; i < taskList.getSize(); i++) {
-            response.append("\n").append(i + 1).append(". ").append(taskList.getTask(i));
+            Task task = taskList.getTask(i);
+            assert task != null : "Every task in the list must be displayable";
+            response.append("\n").append(i + 1).append(". ").append(task);
         }
         return response.toString();
     }

@@ -7,6 +7,7 @@ public abstract class Task {
 
     /** Creates a task with the supplied description and an incomplete status. */
     public Task(String taskDescription) {
+        assert taskDescription != null : "A task must always have a description";
         this.taskDescription = taskDescription;
         this.done = false;
     }

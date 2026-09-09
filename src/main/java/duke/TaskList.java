@@ -14,6 +14,7 @@ public class TaskList {
 
     /** Creates a task list containing the supplied tasks. */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "A task list must be backed by a non-null collection";
         this.taskList = tasks;
     }
 
@@ -27,6 +28,7 @@ public class TaskList {
                 int seq = Integer.parseInt(splitInput[1]);
                 removedTask = this.taskList.get(seq - 1);
                 this.taskList.remove(seq - 1);
+                assert removedTask != null : "A stored task must not be null";
 
             } catch (NumberFormatException e) {
                 throw new DeletionException("Require an integer number to delete");
@@ -44,7 +46,11 @@ public class TaskList {
 
     /** Adds a task to the end of this list. */
     public void addTask(Task newTask) {
+        assert newTask != null : "Only valid tasks may be added to the task list";
+        int sizeBeforeAdding = this.taskList.size();
         this.taskList.add(newTask);
+        assert this.taskList.size() == sizeBeforeAdding + 1
+                : "Adding one task must increase the task-list size by one";
     }
 
     /** Returns the number of tasks in this list. */

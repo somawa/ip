@@ -82,6 +82,9 @@ public class Storage {
      * @param taskList current tasks in their display order
      */
     public void saveTasks(TaskList taskList) {
+        assert taskList != null : "Storage must save a non-null task list";
+        assert taskList.getTaskList().stream().allMatch(task -> task != null)
+                : "A task list must not contain null tasks";
         try {
             this.handlePath();
             Files.write(this.taskFile, taskList.getTaskList()
