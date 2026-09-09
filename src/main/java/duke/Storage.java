@@ -8,8 +8,8 @@ import java.util.List;
 
 /** Persists the current task list to the project's data directory. */
 public class Storage {
-    private Path taskFile;
-    private Path parentDir;
+    private final Path taskFile;
+    private final Path parentDir;
 
     /**
      * Creates storage backed by the specified file.
@@ -63,7 +63,7 @@ public class Storage {
     /**
      * Creates the parent directory and file when they do not exist.
      */
-    private Boolean handlePath() throws IOException {
+    private boolean handlePath() throws IOException {
         if (this.parentDir != null && !Files.exists(this.parentDir)) {
             Files.createDirectories(this.parentDir);
         }

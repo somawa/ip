@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Stores and updates tasks in their user-visible order. */
 public class TaskList {
-    private List<Task> taskList;
+    private final List<Task> taskList;
 
     /** Creates an empty task list. */
     public TaskList() {
@@ -45,7 +45,7 @@ public class TaskList {
     }
 
     /** Adds a task to the end of this list. */
-    public void addTask(Task newTask, String header, String footer) {
+    public void addTask(Task newTask) {
         assert newTask != null : "Only valid tasks may be added to the task list";
         int sizeBeforeAdding = this.taskList.size();
         this.taskList.add(newTask);

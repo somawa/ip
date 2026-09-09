@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /** Provides the date formats used by command parsing, display, and storage. */
-public class DateUtils {
+public final class DateUtils {
     // Matches input like "2/12/2019 1800" or "02/12/2019 1800"
     // 'd' and 'M' single letters allow for single-digit days/months
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");

@@ -182,7 +182,7 @@ Expected output:
 	Hey! This is Blud, what can I do for you today?
 	
 	-------------------------------
-	Missing start (/from) and end (/to) dates for deadline task
+	Missing start (/from) and end (/to) dates for event task
 	-------------------------------
 	Thanks for the conversation, see you soon!
 	-------------------------------

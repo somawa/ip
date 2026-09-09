@@ -4,21 +4,19 @@ import java.time.LocalDateTime;
 
 /** Represents a task that occurs between a start date and an end date. */
 public class Event extends Task {
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     /** Creates an event task from its parsed command parts. */
     public Event(String[] parts) {
         super(validateAndExtractDescription(parts));
         if (parts.length < 2) {
-            throw new DeadlineException("Missing start (/from) and end (/to) dates for deadline task");
-        } else if (parts.length < 3) {
-            if (!parts[1].startsWith("from") && parts[1].startsWith("to")) {
-                throw new DeadlineException("Missing start (/from) date for deadline task");
-            } else if (parts[1].startsWith("from") && !parts[1].startsWith("to")) {
-                throw new DeadlineException("Missing end (/to) date for deadline task");
-            } else {
-                throw new DeadlineException("Missing start (/from) and end (/to) dates for deadline task");
-            }
+            throw new EventException("Missing start (/from) and end (/to) dates for event task");
+        }
+        if (!parts[1].startsWith("from")) {
+            throw new EventException("Missing start (/from) date for event task");
+        }
+        if (parts.length < 3 || !parts[2].startsWith("to")) {
+            throw new EventException("Missing end (/to) date for event task");
         }
         this.startDate = DateUtils.parseInput(
                 parts[1].substring(5).strip()
