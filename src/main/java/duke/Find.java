@@ -1,6 +1,5 @@
 package duke;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,13 +41,11 @@ public class Find {
 
     /** Returns tasks whose descriptions contain the keyword, ignoring letter case. */
     private List<Task> getMatchingTasks(TaskList taskList) {
-        List<Task> matchingTasks = new ArrayList<>();
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        for (Task task : taskList.getTaskList()) {
-            if (task.getTaskDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return taskList.getTaskList().stream()
+                .filter(task -> task.getTaskDescription()
+                        .toLowerCase(Locale.ROOT)
+                        .contains(normalizedKeyword))
+                .toList();
     }
 }
