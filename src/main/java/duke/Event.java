@@ -50,6 +50,11 @@ public class Event extends Task {
         );
     }
 
+    /** Returns the event start date for task-list sorting. */
+    LocalDateTime getStartDate() {
+        return startDate;
+    }
+
     /** Validates the command parts and returns the event description. */
     private static String validateAndExtractDescription(String[] parts) {
         if (parts == null || parts.length == 0 || parts[0].length() < 7) {

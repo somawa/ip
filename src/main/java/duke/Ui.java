@@ -20,6 +20,7 @@ public class Ui {
         LIST,
         FIND,
         DELETE,
+        SORT,
         BYE;
 
         /** Converts a user-entered command name to its command enum value. */

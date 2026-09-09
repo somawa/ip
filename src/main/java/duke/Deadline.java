@@ -37,6 +37,11 @@ public class Deadline extends Task {
         );
     }
 
+    /** Returns the deadline for task-list sorting. */
+    LocalDateTime getDeadline() {
+        return deadline;
+    }
+
     /** Validates the command parts and returns the deadline description. */
     private static String validateAndExtractDescription(String[] parts) {
         if (parts == null || parts.length == 0 || parts[0].length() < 10) {

@@ -3,6 +3,7 @@ package duke;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -61,7 +62,7 @@ public class Blud extends Application {
         conversation.setWrapText(true);
         conversation.setPrefRowCount(18);
         conversation.setText("Hey! This is Blud, what can I do for you today?\n\n"
-                + "Type a command such as 'list', 'todo buy milk', or 'bye'.");
+                + "Type a command such as 'list', 'sort deadline', or 'bye'.");
 
         TextField commandInput = new TextField();
         commandInput.setPromptText("Enter a command...");
@@ -136,6 +137,8 @@ public class Blud extends Application {
                     Task deletedTask = taskList.delete(splitInput);
                     storage.saveTasks(taskList);
                     return "Task removed successfully:\n" + deletedTask;
+                case SORT:
+                    return sortTasks(splitInput);
                 case TODO:
                     return addTask(new ToDo(parts));
                 case DEADLINE:
@@ -157,6 +160,62 @@ public class Blud extends Application {
         taskList.addTask(newTask);
         storage.saveTasks(taskList);
         return "added: " + newTask + "\nNow you have " + taskList.getSize() + " tasks in the list";
+    }
+
+    /** Sorts the current task list according to a user-specified criterion. */
+    private String sortTasks(String[] splitInput) {
+        if (splitInput.length < 2) {
+            throw new IllegalArgumentException(
+                    "Please specify a sort criterion: deadline, event, or status.");
+        }
+        if (splitInput.length > 3) {
+            throw new IllegalArgumentException(
+                    "Invalid sort command. Usage: sort <deadline|event|status> [asc|desc].");
+        }
+
+        TaskList.SortCriterion criterion = parseSortCriterion(splitInput[1]);
+        TaskList.SortDirection direction = splitInput.length == 3
+                ? parseSortDirection(splitInput[2])
+                : TaskList.SortDirection.ASCENDING;
+        if (taskList.getSize() == 0) {
+            return "There are no tasks to sort.";
+        }
+
+        taskList.sort(criterion, direction);
+        return String.format(
+                "Tasks sorted by %s in %s order.",
+                getSortCriterionDisplayName(criterion),
+                direction == TaskList.SortDirection.ASCENDING ? "ascending" : "descending");
+    }
+
+    /** Parses a sort criterion and returns its task-list representation. */
+    private TaskList.SortCriterion parseSortCriterion(String criterion) {
+        return switch (criterion.toLowerCase(Locale.ROOT)) {
+            case "deadline" -> TaskList.SortCriterion.DEADLINE;
+            case "event" -> TaskList.SortCriterion.EVENT;
+            case "status" -> TaskList.SortCriterion.STATUS;
+            default -> throw new IllegalArgumentException(
+                    "Invalid sort criterion. Please use deadline, event, or status.");
+        };
+    }
+
+    /** Parses a sort direction and returns its task-list representation. */
+    private TaskList.SortDirection parseSortDirection(String direction) {
+        return switch (direction.toLowerCase(Locale.ROOT)) {
+            case "asc" -> TaskList.SortDirection.ASCENDING;
+            case "desc" -> TaskList.SortDirection.DESCENDING;
+            default -> throw new IllegalArgumentException(
+                    "Invalid sort direction. Please use asc or desc.");
+        };
+    }
+
+    /** Returns the user-facing name for a sort criterion. */
+    private String getSortCriterionDisplayName(TaskList.SortCriterion criterion) {
+        return switch (criterion) {
+            case DEADLINE -> "deadline";
+            case EVENT -> "event start date";
+            case STATUS -> "completion status";
+        };
     }
 
     /** Formats all currently stored tasks for the chat transcript. */

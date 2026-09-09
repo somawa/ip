@@ -1,30 +1,34 @@
 # Blud User Guide
 
-// Update the title above to match the actual product name
+Blud manages todo, deadline, and event tasks through commands.
 
-// Product screenshot goes here
+## Sorting tasks
 
-// Product intro goes here
+Use `sort` to reorder tasks in the current session. Sorting does not write the
+new order to the storage file by itself.
 
-## Adding deadlines
-
-// Describe the action and its outcome.
-
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
-```
-expected output
+```text
+sort deadline [asc|desc]
+sort event [asc|desc]
+sort status [asc|desc]
 ```
 
-## Feature ABC
+The direction defaults to ascending. `sort deadline` orders deadline tasks
+from earliest to latest, with tasks without deadlines first. `sort event`
+orders events by their start date, and `sort status` places incomplete tasks
+before completed tasks. Use `desc` to reverse the order of values.
 
-// Feature details
+Sorting is stable, so tasks with equal values retain their relative order.
+The current order is used by `list`, `find`, `mark`, `unmark`, and `delete`.
+New tasks are inserted according to the most recent sort during the current
+session.
 
+Examples:
 
-## Feature XYZ
+```text
+sort deadline
+Tasks sorted by deadline in ascending order.
 
-// Feature details
+sort status desc
+Tasks sorted by completion status in descending order.
+```
