@@ -43,7 +43,7 @@ public class TaskList {
     }
 
     /** Adds a task to the end of this list. */
-    public void addTask(Task newTask, String header, String footer) {
+    public void addTask(Task newTask) {
         this.taskList.add(newTask);
     }
 

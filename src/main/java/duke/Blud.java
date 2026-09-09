@@ -30,8 +30,8 @@ public class Blud extends Application {
     private static final String TASK_LIST_PREFACE = "Here are the tasks in your list:";
     private static final String DEPARTURE = "Thanks for the conversation, see you soon!";
 
-    private Storage storage;
-    private TaskList taskList;
+    private final Storage storage;
+    private final TaskList taskList;
 
     /** Creates a Blud instance using the default storage file. */
     public Blud() {
@@ -153,7 +153,7 @@ public class Blud extends Application {
 
     /** Adds a task, persists the updated list, and creates its response. */
     private String addTask(Task newTask) {
-        taskList.addTask(newTask, null, BREAK_LINE);
+        taskList.addTask(newTask);
         storage.saveTasks(taskList);
         return "added: " + newTask + "\nNow you have " + taskList.getSize() + " tasks in the list";
     }
