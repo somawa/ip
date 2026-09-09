@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Stores and updates tasks in their user-visible order. */
 public class TaskList {
-    private List<Task> taskList;
+    private final List<Task> taskList;
 
     /** Creates an empty task list. */
     public TaskList() {

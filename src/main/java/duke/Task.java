@@ -3,7 +3,7 @@ package duke;
 /** Provides common state and behavior for all Blud tasks. */
 public abstract class Task {
     private boolean done;
-    private String taskDescription;
+    private final String taskDescription;
 
     /** Creates a task with the supplied description and an incomplete status. */
     public Task(String taskDescription) {
