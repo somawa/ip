@@ -187,3 +187,67 @@ Expected output:
 	Thanks for the conversation, see you soon!
 	-------------------------------
 ```
+
+### Sorts the existing tasks by deadline
+
+Aim: Verify that Blud accepts a case-insensitive deadline sort command and
+uses the current task order when listing tasks.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+SORT DEADLINE
+list
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Tasks sorted by deadline in ascending order.
+	-------------------------------
+	Here are the tasks in your list:
+	1. [T][ ] read book
+	2. [D][ ] return book (by: Jun 06 2026, 6:00 pm)
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
+### Rejects an invalid sort direction
+
+Aim: Verify that Blud reports an error for an unsupported sort direction.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+sort deadline backwards
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Invalid sort direction. Please use asc or desc.
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
