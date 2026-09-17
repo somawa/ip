@@ -29,7 +29,7 @@ public final class CommandValidator {
             case FIND -> requireAtLeastWords(words, 2, "find <keyword>");
             case MARK, UNMARK, DELETE -> requireWordCount(words, 2,
                     command.name().toLowerCase() + " <task number>");
-            case SORT -> requireWordCountRange(words, 2, 3,
+            case SORT -> requireWordCountRange(words, 1, 3,
                     "sort <deadline|event|status> [asc|desc]");
             case TODO -> requireAtMostTaskParts(taskParts, 1, "todo <description>");
             case DEADLINE -> requireAtMostTaskParts(taskParts, 2,

@@ -1,9 +1,13 @@
 package blud.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import blud.exception.DeletionException;
+import blud.exception.DuplicateTaskException;
+import blud.exception.TaskIndexException;
 import org.junit.jupiter.api.Test;
 
 /** Tests task-list sorting and insertion behavior. */
@@ -62,5 +66,40 @@ public class TaskListTest {
         taskList.addTask(insertedDeadline);
 
         assertEquals(List.of(firstDeadline, insertedDeadline, secondDeadline), taskList.getTaskList());
+    }
+
+    /** Verifies that duplicate task details are rejected. */
+    @Test
+    public void addTask_duplicateTask_throwsDuplicateTaskException() {
+        TaskList taskList = new TaskList();
+        taskList.addTask(new ToDo(new String[] {"todo read"}));
+
+        assertThrows(DuplicateTaskException.class,
+                () -> taskList.addTask(new ToDo(new String[] {"todo read"})));
+    }
+
+    /** Verifies that deletion uses one-based command indices. */
+    @Test
+    public void delete_validCommandIndex_removesTask() {
+        TaskList taskList = new TaskList(List.of(new ToDo(new String[] {"todo read"})));
+
+        Task deletedTask = taskList.delete(new String[] {"delete", "1"});
+
+        assertEquals("[T][ ] read", deletedTask.toString());
+        assertEquals(0, taskList.getSize());
+    }
+
+    /** Verifies that invalid task indices produce user-facing errors. */
+    @Test
+    public void getTaskForCommandIndex_invalidIndex_throwsTaskIndexException() {
+        TaskList taskList = new TaskList();
+
+        assertThrows(TaskIndexException.class, () -> taskList.getTaskForCommandIndex(0));
+    }
+
+    /** Verifies that malformed deletion commands produce deletion errors. */
+    @Test
+    public void delete_missingIndex_throwsDeletionException() {
+        assertThrows(DeletionException.class, () -> new TaskList().delete(new String[] {"delete"}));
     }
 }
