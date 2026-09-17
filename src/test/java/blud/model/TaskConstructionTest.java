@@ -3,10 +3,11 @@ package blud.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Test;
+
 import blud.exception.DeadlineException;
 import blud.exception.EventException;
 import blud.exception.ToDoException;
-import org.junit.jupiter.api.Test;
 
 /** Tests validation and storage representations of task subtypes. */
 public class TaskConstructionTest {
@@ -42,7 +43,7 @@ public class TaskConstructionTest {
         assertEquals("D | 0 | report | 1/6/2026 0900",
                 new Deadline(new String[] {"deadline report", "by 1/6/2026 0900"}).toStorageString());
         assertEquals("E | 0 | meeting | 1/6/2026 0900 | 1/6/2026 1000",
-                new Event(new String[] {"event meeting", "from 1/6/2026 0900", "to 1/6/2026 1000"})
-                        .toStorageString());
+                new Event(new String[] {"event meeting", "from 1/6/2026 0900", "to 1/6/2026 1000"}).
+                        toStorageString());
     }
 }

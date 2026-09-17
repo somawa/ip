@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
 import blud.exception.DeletionException;
 import blud.exception.DuplicateTaskException;
 import blud.exception.TaskIndexException;
-import org.junit.jupiter.api.Test;
 
 /** Tests task-list sorting and insertion behavior. */
 public class TaskListTest {
@@ -30,9 +31,9 @@ public class TaskListTest {
     @Test
     public void sort_eventDescending_usesEventStartDate() {
         Event earlierEvent = new Event(new String[] {
-                "event earlier", "from 1/6/2026 0900", "to 1/6/2026 1000"});
+            "event earlier", "from 1/6/2026 0900", "to 1/6/2026 1000"});
         Event laterEvent = new Event(new String[] {
-                "event later", "from 10/6/2026 0900", "to 10/6/2026 1000"});
+            "event later", "from 10/6/2026 0900", "to 10/6/2026 1000"});
         ToDo todo = new ToDo(new String[] {"todo read book"});
         TaskList taskList = new TaskList(List.of(earlierEvent, todo, laterEvent));
 

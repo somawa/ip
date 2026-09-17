@@ -73,8 +73,8 @@ public class BludTest {
     /** Verifies that command errors are represented in the status result. */
     @Test
     public void processCommandWithStatus_invalidCommand_returnsErrorResult() {
-        Blud.CommandResult result = new Blud(temporaryDirectory.resolve("tasks.txt").toString())
-                .processCommandWithStatus("not-a-command");
+        Blud.CommandResult result = new Blud(temporaryDirectory.resolve("tasks.txt").toString()).
+                processCommandWithStatus("not-a-command");
 
         assertTrue(result.isError());
         assertFalse(result.response().isBlank());

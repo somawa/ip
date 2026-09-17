@@ -2,6 +2,7 @@ package blud.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import blud.command.CommandValidator;
@@ -96,7 +97,7 @@ public class TaskList {
 
     /** Returns the backing list of tasks in display order. */
     public List<Task> getTaskList() {
-        return this.taskList;
+        return Collections.unmodifiableList(this.taskList);
     }
 
     /** Returns the task at the supplied zero-based index. */
@@ -113,7 +114,7 @@ public class TaskList {
     public Task getTaskForCommandIndex(int i) {
         if (i < 0 || i >= taskList.size()) {
             if (taskList.isEmpty()) {
-            throw new TaskIndexException("There are no tasks in the list");
+                throw new TaskIndexException("There are no tasks in the list");
             }
             throw new TaskIndexException(
                     String.format("Please specify a task number from 1 to %d", taskList.size()));

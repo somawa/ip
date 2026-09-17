@@ -11,8 +11,8 @@ import blud.exception.DateTimeInputException;
 public final class DateUtils {
     // Matches input like "2/12/2019 1800" or "02/12/2019 1800"
     // 'd' and 'M' single letters allow for single-digit days/months
-    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm")
-            .withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm").
+            withResolverStyle(ResolverStyle.STRICT);
 
     // Outputs exactly: "Dec 02 2019, 6:00 PM"
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");

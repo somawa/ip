@@ -2,14 +2,13 @@ package blud.ui;
 
 import java.io.IOException;
 
+import blud.Blud;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import blud.Blud;
 
 /** Starts the JavaFX interface for the Blud chatbot. */
 public class BludApplication extends Application {

@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import blud.exception.TaskTypeException;
 import org.junit.jupiter.api.Test;
+
+import blud.exception.TaskTypeException;
 
 /** Tests conversion of user-entered command names. */
 public class CommandTest {

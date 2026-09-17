@@ -1,11 +1,11 @@
 package blud.command;
 
+import java.util.List;
+import java.util.Locale;
+
 import blud.exception.CommandFormatException;
 import blud.model.Task;
 import blud.model.TaskList;
-
-import java.util.List;
-import java.util.Locale;
 
 /** Searches the task list for tasks whose descriptions contain a keyword. */
 public class Find {
