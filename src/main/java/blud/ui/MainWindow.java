@@ -1,5 +1,7 @@
 package blud.ui;
 
+import java.io.InputStream;
+
 import blud.Blud;
 
 import javafx.fxml.FXML;
@@ -65,6 +67,10 @@ public class MainWindow extends BorderPane {
 
     /** Loads a required avatar from the application resources. */
     private static Image loadImage(String resourcePath) {
-        return new Image(MainWindow.class.getResourceAsStream(resourcePath));
+        InputStream imageStream = MainWindow.class.getResourceAsStream(resourcePath);
+        if (imageStream == null) {
+            throw new IllegalStateException("Unable to load Blud image resource: " + resourcePath);
+        }
+        return new Image(imageStream);
     }
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -26,7 +27,20 @@ public class BludApplication extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException | RuntimeException exception) {
-            throw new IllegalStateException("Unable to load the Blud interface.", exception);
+            showStartupError(stage, exception);
         }
+    }
+
+    /** Shows an actionable error when the graphical interface cannot start. */
+    private void showStartupError(Stage stage, Exception exception) {
+        String reason = exception.getMessage() == null
+                ? "An unexpected error occurred."
+                : exception.getMessage();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Blud Chatbot");
+        alert.setHeaderText("Blud could not start");
+        alert.setContentText(reason + "\nPlease check that the task data file is accessible.");
+        alert.showAndWait();
+        stage.close();
     }
 }

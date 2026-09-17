@@ -70,7 +70,7 @@ public class Blud {
     public CommandResult processCommandWithStatus(String userInput) {
         try {
             CommandValidator.validate(userInput);
-            if ("bye".equals(userInput)) {
+            if ("bye".equalsIgnoreCase(userInput)) {
                 return new CommandResult(DEPARTURE, false);
             }
 
@@ -125,11 +125,20 @@ public class Blud {
         startupList.add(greeting);
         Ui ui = new Ui();
         ui.sectionString(BREAK_LINE, startupList, null, Ui.Mode.SIMPLE);
+        if (!scanner.hasNextLine()) {
+            ui.sectionString(null, List.of(DEPARTURE), BREAK_LINE, Ui.Mode.SIMPLE);
+            return;
+        }
+
         String userInput = scanner.nextLine();
         ui.sectionString(null, List.of(), BREAK_LINE, Ui.Mode.SIMPLE);
-        while (!"bye".equals(userInput)) {
+        while (!"bye".equalsIgnoreCase(userInput)) {
             String response = processCommand(userInput);
             ui.sectionString(null, Arrays.asList(response.split("\n")), BREAK_LINE, Ui.Mode.SIMPLE);
+            if (!scanner.hasNextLine()) {
+                ui.sectionString(null, List.of(DEPARTURE), BREAK_LINE, Ui.Mode.SIMPLE);
+                return;
+            }
             userInput = scanner.nextLine();
         }
         ui.sectionString(null, List.of(DEPARTURE), BREAK_LINE, Ui.Mode.SIMPLE);
@@ -138,6 +147,13 @@ public class Blud {
     /** Console-compatible entry point retained for direct invocation. */
     public static void main(String[] args) {
         String filePath = args.length == 0 ? DEFAULT_FILE_PATH : args[0];
-        new Blud(filePath).run();
+        try {
+            new Blud(filePath).run();
+        } catch (RuntimeException exception) {
+            String message = exception.getMessage() == null
+                    ? "Unable to start Blud."
+                    : exception.getMessage();
+            System.out.println("Blud could not start: " + message);
+        }
     }
 }

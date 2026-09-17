@@ -62,6 +62,33 @@ Expected output:
 	-------------------------------
 ```
 
+### Accepts a case-insensitive exit command
+
+Aim: Verify that an uppercase `BYE` is treated as the supported exit command and
+does not produce an invalid-task-type error.
+
+Command: `java -cp out blud.Blud data/ui-test-1.txt`
+
+Inputs:
+```text
+BYE
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
 ### Finds tasks by a description keyword
 
 Aim: Verify that Blud finds tasks whose descriptions partially match a keyword, regardless of letter case.
