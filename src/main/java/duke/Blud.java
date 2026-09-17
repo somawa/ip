@@ -6,18 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * The Blud chatbot and its JavaFX user interface.
@@ -25,7 +13,7 @@ import javafx.stage.Stage;
  * <p>The command-processing method is shared by the graphical interface and
  * can also be used by other interfaces without depending on JavaFX controls.</p>
  */
-public class Blud extends Application {
+public class Blud {
     private static final String DEFAULT_FILE_PATH = "data/blud.txt";
     private static final String BREAK_LINE = "-------------------------------";
     private static final String TASK_LIST_PREFACE = "Here are the tasks in your list:";
@@ -49,69 +37,21 @@ public class Blud extends Application {
     }
 
     /**
-     * Starts the JavaFX window and wires the controls to the chatbot.
-     * @param stage the primary JavaFX window.
-     */
-    @Override
-    public void start(Stage stage) {
-        Label title = new Label("Blud");
-        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-
-        TextArea conversation = new TextArea();
-        conversation.setEditable(false);
-        conversation.setWrapText(true);
-        conversation.setPrefRowCount(18);
-        conversation.setText("Hey! This is Blud, what can I do for you today?\n\n"
-                + "Type a command such as 'list', 'sort deadline', or 'bye'.");
-
-        TextField commandInput = new TextField();
-        commandInput.setPromptText("Enter a command...");
-        Button sendButton = new Button("Send");
-        sendButton.setDefaultButton(true);
-
-        Runnable sendCommand = () -> {
-            String command = commandInput.getText().trim();
-            if (command.isEmpty()) {
-                return;
-            }
-            conversation.appendText("\n\nYou: " + command + "\nBlud: ");
-            conversation.appendText(processCommand(command));
-            commandInput.clear();
-            if ("bye".equals(command)) {
-                commandInput.setDisable(true);
-                sendButton.setDisable(true);
-            }
-        };
-        sendButton.setOnAction(event -> sendCommand.run());
-        commandInput.setOnAction(event -> sendCommand.run());
-
-        HBox inputRow = new HBox(10, commandInput, sendButton);
-        HBox.setHgrow(commandInput, Priority.ALWAYS);
-        VBox content = new VBox(10, title, conversation, inputRow);
-        content.setPadding(new Insets(15));
-        VBox.setVgrow(conversation, Priority.ALWAYS);
-
-        BorderPane root = new BorderPane(content);
-        Scene scene = new Scene(root, 620, 480);
-        stage.setTitle("Blud Chatbot");
-        stage.setMinWidth(450);
-        stage.setMinHeight(350);
-        stage.setScene(scene);
-        stage.show();
-        commandInput.requestFocus();
-    }
-
-    /**
      * Processes one chatbot command and returns the response for display.
      * @param userInput command entered by the user.
      * @return a human-readable response without UI-specific formatting.
      */
     public String processCommand(String userInput) {
+        return processCommandWithStatus(userInput).response();
+    }
+
+    /** Processes a command while retaining whether the response represents an error. */
+    public CommandResult processCommandWithStatus(String userInput) {
         if (userInput == null || userInput.isBlank()) {
-            return "Please enter a command.";
+            return new CommandResult("Please enter a command.", true);
         }
         if ("bye".equals(userInput.trim())) {
-            return DEPARTURE;
+            return new CommandResult(DEPARTURE, false);
         }
 
         String[] splitInput = userInput.trim().split("\\s+");
@@ -120,38 +60,46 @@ public class Blud extends Application {
             Ui.Command inputCommand = Ui.Command.stringToCommand(splitInput[0]);
             switch (inputCommand) {
                 case LIST:
-                    return formatTaskList();
+                    return new CommandResult(formatTaskList(), false);
                 case FIND:
-                    return new Find(userInput).execute(taskList);
+                    return new CommandResult(new Find(userInput).execute(taskList), false);
                 case MARK:
                     int idMark = Integer.parseInt(splitInput[1]) - 1;
                     taskList.markTask(idMark);
                     storage.saveTasks(taskList);
-                    return "Nice! I've marked this task as done:\n" + taskList.getTask(idMark);
+                    String markResponse = "Nice! I've marked this task as done:\n" + taskList.getTask(idMark);
+                    return new CommandResult(markResponse, false);
                 case UNMARK:
                     int idUnmark = Integer.parseInt(splitInput[1]) - 1;
                     taskList.getTask(idUnmark).unmark();
                     storage.saveTasks(taskList);
-                    return "OK, I've marked this task as not done yet:\n" + taskList.getTask(idUnmark);
+                    String unmarkResponse = "OK, I've marked this task as not done yet:\n"
+                            + taskList.getTask(idUnmark);
+                    return new CommandResult(unmarkResponse, false);
                 case DELETE:
                     Task deletedTask = taskList.delete(splitInput);
                     storage.saveTasks(taskList);
-                    return "Task removed successfully:\n" + deletedTask;
+                    return new CommandResult("Task removed successfully:\n" + deletedTask, false);
                 case SORT:
-                    return sortTasks(splitInput);
+                    return new CommandResult(sortTasks(splitInput), false);
                 case TODO:
-                    return addTask(new ToDo(parts));
+                    return new CommandResult(addTask(new ToDo(parts)), false);
                 case DEADLINE:
-                    return addTask(new Deadline(parts));
+                    return new CommandResult(addTask(new Deadline(parts)), false);
                 case EVENT:
-                    return addTask(new Event(parts));
+                    return new CommandResult(addTask(new Event(parts)), false);
                 default:
                     throw new TaskTypeException("invalid task type " + splitInput[0]
                             + ", please use one of todo, event or deadline task types");
             }
         } catch (RuntimeException e) {
-            return e.getMessage() == null ? "Unable to process command." : e.getMessage();
+            String message = e.getMessage() == null ? "Unable to process command." : e.getMessage();
+            return new CommandResult(message, true);
         }
+    }
+
+    /** Represents a chatbot response and whether it should be visually highlighted as an error. */
+    public record CommandResult(String response, boolean isError) {
     }
 
     /** Adds a task, persists the updated list, and creates its response. */
