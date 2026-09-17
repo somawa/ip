@@ -6,6 +6,37 @@ automatically, so they are available the next time you start Blud.
 
 ## Quick start
 
+### Set up and start Blud
+
+Before starting, ensure that Java 25 is installed and configured on your
+computer. Then:
+
+1. Download the latest release of `blud.jar` into a local folder.
+2. Open a terminal.
+3. Navigate to the folder containing `blud.jar`.
+4. Start Blud with:
+
+   ```bash
+   java -jar blud.jar
+   ```
+
+5. Follow the rest of this guide for detailed command instructions.
+
+### Command overview
+
+| Command | Usage | Description |
+| --- | --- | --- |
+| Add to-do | `todo <description>` | Adds a task without a date. |
+| Add deadline | `deadline <description> /by <date time>` | Adds a task that must be completed by a date and time. |
+| Add event | `event <description> /from <start> /to <end>` | Adds a task that takes place between two date-times. |
+| List | `list` | Shows all tasks in their current order. |
+| Find | `find <keyword>` | Finds tasks whose descriptions contain the keyword. |
+| Mark | `mark <task number>` | Marks a task as completed. |
+| Unmark | `unmark <task number>` | Marks a completed task as not done. |
+| Delete | `delete <task number>` | Removes a task from the list. |
+| Sort | `sort <criterion> [direction]` | Sorts tasks by deadline, event start date, or status. |
+| Exit | `bye` | Closes Blud. |
+
 Blud supports three kinds of tasks:
 
 | Task type | Syntax | Example |
