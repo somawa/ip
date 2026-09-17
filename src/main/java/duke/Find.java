@@ -12,16 +12,16 @@ public class Find {
     /** Creates a find command from the complete user input. */
     public Find(String userInput) {
         if (userInput == null) {
-            throw new IllegalArgumentException("Please provide a keyword to find.");
+            throw new CommandFormatException("Please provide a keyword to find.");
         }
 
         String[] inputParts = userInput.trim().split("\\s+", 2);
         if (inputParts.length < 2 || !"find".equalsIgnoreCase(inputParts[0])) {
-            throw new IllegalArgumentException("Please provide a keyword to find.");
+            throw new CommandFormatException("Please provide a keyword to find.");
         }
         this.keyword = inputParts[1].trim();
-        if (this.keyword.isEmpty()) {
-            throw new IllegalArgumentException("Please provide a keyword to find.");
+        if (this.keyword.isEmpty() || this.keyword.contains("/")) {
+            throw new CommandFormatException("Please provide a keyword to find.");
         }
     }
 
