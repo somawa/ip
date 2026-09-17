@@ -22,6 +22,12 @@ computer. Then:
 
 5. Follow the rest of this guide for detailed command instructions.
 
+### Sample conversation
+
+Here is an example of what a conversation with Blud looks like:
+
+![Blud chatbot interface](Ui.png)
+
 ### Command overview
 
 | Command | Usage | Description |
