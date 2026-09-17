@@ -43,17 +43,13 @@ public class TaskList {
             throw new DeletionException();
         } else {
             try {
-                int seq = Integer.parseInt(splitInput[1]);
-                removedTask = this.taskList.get(seq - 1);
-                this.taskList.remove(seq - 1);
+                int index = CommandValidator.parseTaskIndex(splitInput[1]);
+                removedTask = getTaskForCommandIndex(index);
+                this.taskList.remove(index);
                 assert removedTask != null : "A stored task must not be null";
-
-            } catch (NumberFormatException e) {
-                throw new DeletionException("Require an integer number to delete");
-            } catch (IndexOutOfBoundsException e) {
+            } catch (CommandFormatException | TaskIndexException e) {
                 if (!this.taskList.isEmpty()) {
-                    throw new DeletionException(String.format(
-                            "Require a valid integer from %s to %s to delete from", 1, taskList.size()));
+                    throw new DeletionException(e.getMessage());
                 } else {
                     throw new DeletionException("task list is empty, nothing to delete");
                 }
@@ -65,6 +61,9 @@ public class TaskList {
     /** Adds a task to the end of this list. */
     public void addTask(Task newTask) {
         assert newTask != null : "Only valid tasks may be added to the task list";
+        if (taskList.stream().anyMatch(task -> task.hasSameDetails(newTask))) {
+            throw new DuplicateTaskException();
+        }
         int sizeBeforeAdding = this.taskList.size();
         if (this.sortCriterion == null) {
             this.taskList.add(newTask);
@@ -101,7 +100,19 @@ public class TaskList {
 
     /** Marks the task at the supplied zero-based index as completed. */
     public void markTask(int i) {
-        taskList.get(i).mark();
+        getTaskForCommandIndex(i).mark();
+    }
+
+    /** Returns a task for a zero-based command index with a user-facing validation error. */
+    public Task getTaskForCommandIndex(int i) {
+        if (i < 0 || i >= taskList.size()) {
+            if (taskList.isEmpty()) {
+            throw new TaskIndexException("There are no tasks in the list");
+            }
+            throw new TaskIndexException(
+                    String.format("Please specify a task number from 1 to %d", taskList.size()));
+        }
+        return taskList.get(i);
     }
 
     /** Inserts a task after existing tasks with an equal sort value. */

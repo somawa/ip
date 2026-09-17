@@ -251,3 +251,90 @@ Expected output:
 	Thanks for the conversation, see you soon!
 	-------------------------------
 ```
+
+### Rejects a non-existent calendar date
+
+Aim: Verify that a deadline reports an actionable validation message for a date such as February 30 instead of exposing an indexing error.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+deadline invalid date /by 30/2/2026 1800
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Invalid date or time. Please use a real date in d/M/yyyy HHmm format (e.g., 2/12/2019 1800)
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
+### Rejects an event whose dates are not chronological
+
+Aim: Verify that an event rejects an end date/time that is not after its start date/time.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+event invalid order /from 2/12/2026 1800 /to 2/12/2026 1800
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Event start date/time must be earlier than its end date/time
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
+### Rejects malformed command whitespace
+
+Aim: Verify that leading, trailing, and repeated spaces are reported as command-format errors.
+
+Command: `java -cp out duke.Blud`
+
+Inputs:
+```text
+todo  extra
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Use exactly one space between command parameters.
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```

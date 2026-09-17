@@ -47,31 +47,30 @@ public class Blud {
 
     /** Processes a command while retaining whether the response represents an error. */
     public CommandResult processCommandWithStatus(String userInput) {
-        if (userInput == null || userInput.isBlank()) {
-            return new CommandResult("Please enter a command.", true);
-        }
-        if ("bye".equals(userInput.trim())) {
-            return new CommandResult(DEPARTURE, false);
-        }
-
-        String[] splitInput = userInput.trim().split("\\s+");
-        String[] parts = userInput.trim().split(" /", -1);
         try {
+            CommandValidator.validate(userInput);
+            if ("bye".equals(userInput)) {
+                return new CommandResult(DEPARTURE, false);
+            }
+
+            String[] splitInput = userInput.split(" ");
             Ui.Command inputCommand = Ui.Command.stringToCommand(splitInput[0]);
+            CommandValidator.validateCommand(inputCommand, userInput);
+            String[] parts = CommandValidator.splitTaskParts(userInput);
             switch (inputCommand) {
                 case LIST:
                     return new CommandResult(formatTaskList(), false);
                 case FIND:
                     return new CommandResult(new Find(userInput).execute(taskList), false);
                 case MARK:
-                    int idMark = Integer.parseInt(splitInput[1]) - 1;
+                    int idMark = CommandValidator.parseTaskIndex(splitInput[1]);
                     taskList.markTask(idMark);
                     storage.saveTasks(taskList);
                     String markResponse = "Nice! I've marked this task as done:\n" + taskList.getTask(idMark);
                     return new CommandResult(markResponse, false);
                 case UNMARK:
-                    int idUnmark = Integer.parseInt(splitInput[1]) - 1;
-                    taskList.getTask(idUnmark).unmark();
+                    int idUnmark = CommandValidator.parseTaskIndex(splitInput[1]);
+                    taskList.getTaskForCommandIndex(idUnmark).unmark();
                     storage.saveTasks(taskList);
                     String unmarkResponse = "OK, I've marked this task as not done yet:\n"
                             + taskList.getTask(idUnmark);
@@ -113,11 +112,11 @@ public class Blud {
     /** Sorts the current task list according to a user-specified criterion. */
     private String sortTasks(String[] splitInput) {
         if (splitInput.length < 2) {
-            throw new IllegalArgumentException(
+            throw new CommandFormatException(
                     "Please specify a sort criterion: deadline, event, or status.");
         }
         if (splitInput.length > 3) {
-            throw new IllegalArgumentException(
+            throw new CommandFormatException(
                     "Invalid sort command. Usage: sort <deadline|event|status> [asc|desc].");
         }
 
@@ -142,7 +141,7 @@ public class Blud {
             case "deadline" -> TaskList.SortCriterion.DEADLINE;
             case "event" -> TaskList.SortCriterion.EVENT;
             case "status" -> TaskList.SortCriterion.STATUS;
-            default -> throw new IllegalArgumentException(
+            default -> throw new CommandFormatException(
                     "Invalid sort criterion. Please use deadline, event, or status.");
         };
     }
@@ -152,7 +151,7 @@ public class Blud {
         return switch (direction.toLowerCase(Locale.ROOT)) {
             case "asc" -> TaskList.SortDirection.ASCENDING;
             case "desc" -> TaskList.SortDirection.DESCENDING;
-            default -> throw new IllegalArgumentException(
+            default -> throw new CommandFormatException(
                     "Invalid sort direction. Please use asc or desc.");
         };
     }

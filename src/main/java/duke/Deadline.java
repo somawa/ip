@@ -8,8 +8,11 @@ public class Deadline extends Task {
     /** Creates a deadline task from its parsed command parts. */
     public Deadline(String[] parts) {
         super(validateAndExtractDescription(parts));
-        if (parts.length < 2 || !parts[1].startsWith("by")) {
+        if (parts.length != 2 || !parts[1].startsWith("by ")) {
             throw new DeadlineException("Missing deadline (/by) for deadline task");
+        }
+        if (parts[1].substring(3).strip().isEmpty()) {
+            throw new DeadlineException("Missing date/time after /by for deadline task");
         }
         this.deadline = DateUtils.parseInput(
                 parts[1].substring(3).strip()

@@ -48,6 +48,22 @@ public abstract class Task {
         return taskDescription;
     }
 
+    /** Returns whether this task has the same user-supplied details as another task. */
+    public boolean hasSameDetails(Task other) {
+        if (other == null || getClass() != other.getClass()
+                || !taskDescription.equals(other.taskDescription)) {
+            return false;
+        }
+        if (this instanceof Deadline firstDeadline && other instanceof Deadline secondDeadline) {
+            return firstDeadline.getDeadline().equals(secondDeadline.getDeadline());
+        }
+        if (this instanceof Event firstEvent && other instanceof Event secondEvent) {
+            return firstEvent.getStartDate().equals(secondEvent.getStartDate())
+                    && firstEvent.getEndDate().equals(secondEvent.getEndDate());
+        }
+        return true;
+    }
+
     /** Returns this task's display representation. */
     @Override
     public String toString() {
