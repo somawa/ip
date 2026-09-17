@@ -67,6 +67,7 @@ public class BludTest {
         assertTrue(blud.processCommand("find BOOK").contains("read book"));
         assertEquals("Task removed successfully:\n[T][ ] read book", blud.processCommand("delete 1"));
         assertEquals("Thanks for the conversation, see you soon!", blud.processCommand("bye"));
+        assertEquals("Thanks for the conversation, see you soon!", blud.processCommand("BYE"));
     }
 
     /** Verifies that command errors are represented in the status result. */
