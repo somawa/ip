@@ -42,10 +42,8 @@ public class Find {
     /** Returns tasks whose descriptions contain the keyword, ignoring letter case. */
     private List<Task> getMatchingTasks(TaskList taskList) {
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        return taskList.getTaskList().stream()
-                .filter(task -> task.getTaskDescription()
-                        .toLowerCase(Locale.ROOT)
-                        .contains(normalizedKeyword))
-                .toList();
+        return taskList.getTaskList().stream().
+                filter(task -> task.getTaskDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)).
+                toList();
     }
 }

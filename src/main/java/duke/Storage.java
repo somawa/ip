@@ -87,10 +87,7 @@ public class Storage {
                 : "A task list must not contain null tasks";
         try {
             this.handlePath();
-            Files.write(this.taskFile, taskList.getTaskList()
-                    .stream()
-                    .map(Task::toStorageString)
-                    .toList());
+            Files.write(this.taskFile, taskList.getTaskList().stream().map(Task::toStorageString).toList());
         } catch (IOException e) {
             throw new IllegalStateException("Unable to save tasks", e);
         }
@@ -123,12 +120,9 @@ public class Storage {
         try {
             Boolean fileExists = this.handlePath();
             if (fileExists) {
-                return new ArrayList<>(
-                        Files.readAllLines(this.taskFile)
-                                .stream()
-                                .map(Storage::mapTaskFromString)
-                                .toList()
-                );
+                return new ArrayList<>(Files.readAllLines(this.taskFile).stream().
+                        map(Storage::mapTaskFromString).
+                        toList());
             } else {
                 return new ArrayList<>();
             }
