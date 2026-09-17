@@ -63,7 +63,7 @@ test {
 }
 
 application {
-    mainClass = 'duke.Launcher'
+    mainClass = 'blud.ui.Launcher'
 }
 
 jar {

@@ -11,7 +11,7 @@ The runner executes cases from top to bottom. `Inputs` are sent to standard inpu
 
 Aim: Verify that Blud displays its startup banner and greeting, then displays its departure message when the user exits immediately.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-1.txt`
 
 Inputs:
 ```text
@@ -37,7 +37,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a todo command has no description and continues accepting commands.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-2.txt`
 
 Inputs:
 ```text
@@ -66,7 +66,7 @@ Expected output:
 
 Aim: Verify that Blud finds tasks whose descriptions partially match a keyword, regardless of letter case.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -105,7 +105,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -134,7 +134,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a deadline task omits its `/by` field.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -163,7 +163,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when an event task omits its `/from` and `/to` fields.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -193,7 +193,7 @@ Expected output:
 Aim: Verify that Blud accepts a case-insensitive deadline sort command and
 uses the current task order when listing tasks.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -227,7 +227,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error for an unsupported sort direction.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -256,7 +256,7 @@ Expected output:
 
 Aim: Verify that a deadline reports an actionable validation message for a date such as February 30 instead of exposing an indexing error.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -285,7 +285,7 @@ Expected output:
 
 Aim: Verify that an event rejects an end date/time that is not after its start date/time.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
@@ -314,7 +314,7 @@ Expected output:
 
 Aim: Verify that leading, trailing, and repeated spaces are reported as command-format errors.
 
-Command: `java -cp out duke.Blud`
+Command: `java -cp out blud.Blud data/ui-test-session.txt`
 
 Inputs:
 ```text
