@@ -18,6 +18,9 @@ public final class CommandValidator {
         if (userInput.indexOf('\t') >= 0 || userInput.contains("  ")) {
             throw new CommandFormatException("Use exactly one space between command parameters.");
         }
+        if (userInput.indexOf('|') >= 0) {
+            throw new CommandFormatException("Task descriptions must not contain '|'.");
+        }
     }
 
     /** Validates the number and basic shape of parameters for a parsed command. */

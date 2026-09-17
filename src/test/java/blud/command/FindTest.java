@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
 import blud.model.TaskList;
 import blud.model.ToDo;
-import org.junit.jupiter.api.Test;
 
 /** Tests searching tasks by description keyword. */
 public class FindTest {

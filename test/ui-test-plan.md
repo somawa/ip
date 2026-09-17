@@ -11,7 +11,7 @@ The runner executes cases from top to bottom. `Inputs` are sent to standard inpu
 
 Aim: Verify that Blud displays its startup banner and greeting, then displays its departure message when the user exits immediately.
 
-Command: `java -cp out blud.Blud data/ui-test-1.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -37,7 +37,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a todo command has no description and continues accepting commands.
 
-Command: `java -cp out blud.Blud data/ui-test-2.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -67,7 +67,7 @@ Expected output:
 Aim: Verify that an uppercase `BYE` is treated as the supported exit command and
 does not produce an invalid-task-type error.
 
-Command: `java -cp out blud.Blud data/ui-test-1.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -93,7 +93,7 @@ Expected output:
 
 Aim: Verify that Blud finds tasks whose descriptions partially match a keyword, regardless of letter case.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -132,7 +132,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error for an input that is not a supported command or task type.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -161,7 +161,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when a deadline task omits its `/by` field.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -190,7 +190,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error when an event task omits its `/from` and `/to` fields.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -220,10 +220,12 @@ Expected output:
 Aim: Verify that Blud accepts a case-insensitive deadline sort command and
 uses the current task order when listing tasks.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
+todo read book
+deadline return book /by 6/6/2026 1800
 SORT DEADLINE
 list
 bye
@@ -240,6 +242,12 @@ Expected output:
 	Hey! This is Blud, what can I do for you today?
 	
 	-------------------------------
+	added: [T][ ] read book
+	Now you have 1 tasks in the list
+	-------------------------------
+	added: [D][ ] return book (by: Jun 06 2026, 6:00 pm)
+	Now you have 2 tasks in the list
+	-------------------------------
 	Tasks sorted by deadline in ascending order.
 	-------------------------------
 	Here are the tasks in your list:
@@ -254,7 +262,7 @@ Expected output:
 
 Aim: Verify that Blud reports an error for an unsupported sort direction.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -283,7 +291,7 @@ Expected output:
 
 Aim: Verify that a deadline reports an actionable validation message for a date such as February 30 instead of exposing an indexing error.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -312,7 +320,7 @@ Expected output:
 
 Aim: Verify that an event rejects an end date/time that is not after its start date/time.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -341,7 +349,7 @@ Expected output:
 
 Aim: Verify that leading, trailing, and repeated spaces are reported as command-format errors.
 
-Command: `java -cp out blud.Blud data/ui-test-session.txt`
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
 
 Inputs:
 ```text
@@ -361,6 +369,36 @@ Expected output:
 	
 	-------------------------------
 	Use exactly one space between command parameters.
+	-------------------------------
+	Thanks for the conversation, see you soon!
+	-------------------------------
+```
+
+### Rejects the storage delimiter in task descriptions
+
+Aim: Verify that task descriptions containing the storage delimiter are rejected
+before they can create an unreadable task file.
+
+Command: `java -cp out blud.Blud "%TEMP%\blud-ui-test-%RANDOM%.txt"`
+
+Inputs:
+```text
+todo milk | eggs
+bye
+```
+
+Expected output:
+```text
+	-------------------------------
+	 ____  _            _
+	| __ )| |_   _  ___| |
+	|  _ \| | | | |/ __| |
+	| |_) | | |_| | (__|_|
+	|____/|_|\__,_|\___(_)
+	Hey! This is Blud, what can I do for you today?
+	
+	-------------------------------
+	Task descriptions must not contain '|'.
 	-------------------------------
 	Thanks for the conversation, see you soon!
 	-------------------------------

@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import blud.exception.CommandFormatException;
 import org.junit.jupiter.api.Test;
+
+import blud.exception.CommandFormatException;
 
 /** Tests shared command syntax and argument validation. */
 public class CommandValidatorTest {
@@ -21,6 +22,7 @@ public class CommandValidatorTest {
         assertThrows(CommandFormatException.class, () -> CommandValidator.validate(" todo task"));
         assertThrows(CommandFormatException.class, () -> CommandValidator.validate("todo  task"));
         assertThrows(CommandFormatException.class, () -> CommandValidator.validate("todo\ttask"));
+        assertThrows(CommandFormatException.class, () -> CommandValidator.validate("todo milk | eggs"));
     }
 
     /** Verifies that null and blank command text is rejected. */
