@@ -13,7 +13,7 @@
             stylesheets="@blud.css"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="duke.MainWindow">
+            fx:controller="blud.ui.MainWindow">
     <top>
         <VBox styleClass="header">
             <Label text="Blud" styleClass="title" />
